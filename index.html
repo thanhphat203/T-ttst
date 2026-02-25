@@ -4,76 +4,201 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tài Liệu Trading Insight</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-gold: #f3ba2f;
+            --shopee-orange: #ee4d2d;
+            --success-green: #00b894;
+            --bg-dark: #0f1115;
+            --glass-bg: rgba(30, 34, 45, 0.7);
+        }
+
         body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #121212; 
+            font-family: 'Poppins', sans-serif; 
+            background: radial-gradient(circle at center, #1e222d 0%, var(--bg-dark) 100%);
             color: #ffffff; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            height: 100vh; 
+            min-height: 100vh; 
             margin: 0; 
+            overflow: hidden;
         }
+
+        /* Hiệu ứng nền chuyển động nhẹ */
+        .bg-glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: var(--primary-gold);
+            border-radius: 50%;
+            filter: blur(150px);
+            opacity: 0.15;
+            animation: float 6s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-30px); }
+            100% { transform: translateY(0px); }
+        }
+
         .container { 
-            background-color: #1e1e1e; 
-            padding: 40px; 
-            border-radius: 12px; 
-            box-shadow: 0 8px 16px rgba(0,0,0,0.5); 
+            position: relative;
+            z-index: 1;
+            background: var(--glass-bg); 
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 40px 30px; 
+            border-radius: 20px; 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(243, 186, 47, 0.1); 
             text-align: center; 
-            max-width: 450px; 
+            max-width: 400px; 
             width: 90%; 
+            animation: fadeIn 0.8s ease-out forwards;
         }
-        h2 { color: #f3ba2f; margin-bottom: 10px; }
-        p { color: #cccccc; font-size: 15px; line-height: 1.5; margin-bottom: 25px; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon-header {
+            font-size: 40px;
+            color: var(--primary-gold);
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(243, 186, 47, 0.4);
+        }
+
+        h2 { 
+            color: #ffffff; 
+            margin-top: 0;
+            margin-bottom: 10px; 
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        h2 span { color: var(--primary-gold); }
+
+        p { 
+            color: #a0aec0; 
+            font-size: 14px; 
+            line-height: 1.6; 
+            margin-bottom: 30px; 
+        }
+
         .btn { 
-            display: block; 
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
             width: 100%; 
-            padding: 14px 0; 
+            padding: 16px 0; 
             margin: 10px 0; 
-            border-radius: 6px; 
+            border-radius: 12px; 
             text-decoration: none; 
-            font-weight: bold; 
+            font-weight: 600; 
             font-size: 16px; 
             cursor: pointer; 
             border: none; 
-            transition: 0.3s ease; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
             box-sizing: border-box;
+            letter-spacing: 0.5px;
         }
-        .btn-shopee { background-color: #ee4d2d; color: white; }
-        .btn-shopee:hover { background-color: #d73a1e; }
-        .btn-download { background-color: #28a745; color: white; display: none; }
-        .btn-download:hover { background-color: #218838; }
-        #countdown-text { margin-top: 20px; font-size: 14px; color: #f3ba2f; display: none; font-weight: bold; }
+
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+
+        .btn-shopee { 
+            background: linear-gradient(135deg, #ff7e5f, var(--shopee-orange)); 
+            color: white; 
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(238, 77, 45, 0.5); }
+            70% { box-shadow: 0 0 0 15px rgba(238, 77, 45, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(238, 77, 45, 0); }
+        }
+
+        .btn-download { 
+            background: linear-gradient(135deg, #00cec9, var(--success-green)); 
+            color: white; 
+            display: none; 
+        }
+
+        /* Vùng đếm ngược */
+        #loading-area {
+            display: none;
+            margin-top: 25px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(243, 186, 47, 0.2);
+            border-top: 4px solid var(--primary-gold);
+            border-radius: 50%;
+            margin: 0 auto 15px auto;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        #countdown-text { 
+            font-size: 15px; 
+            color: #e2e8f0; 
+            font-weight: 600; 
+        }
+        
+        #timer {
+            color: var(--primary-gold);
+            font-size: 18px;
+            font-weight: 700;
+        }
     </style>
 </head>
 <body>
 
+    <div class="bg-glow"></div>
+
     <div class="container">
-        <h2>Tài Liệu Cấu Trúc Thị Trường</h2>
-        <p>Để duy trì hoạt động cộng đồng, bạn vui lòng ghé thăm nhà tài trợ của chúng tôi trước khi lấy link tải gốc nhé</p>
+        <i class="fa-solid fa-chart-line icon-header"></i>
+        <h2>Tài Liệu <span>Trading</span></h2>
+        <p>Bấm vào nút bên dưới để mở khóa link tải tài liệu miễn phí nhé!</p>
 
-        <button id="shopeeBtn" class="btn btn-shopee" onclick="unlockContent()">👉 Bấm vào đây để mở khóa link</button>
+        <button id="shopeeBtn" class="btn btn-shopee" onclick="unlockContent()">
+            <i class="fa-solid fa-unlock-keyhole"></i> Bấm Vào Đây Để Mở Khóa Link Tải
+        </button>
 
-        <div id="countdown-text">Đang xác thực... Vui lòng đợi <span id="timer">5</span> giây</div>
+        <div id="loading-area">
+            <div class="spinner"></div>
+            <div id="countdown-text">Đang tạo link bảo mật... <span id="timer">5</span>s</div>
+        </div>
 
-        <a id="downloadBtn" href="LINK_GOOGLE_DRIVE_HAY_MEGA_CUA_BAN_O_DAY" class="btn btn-download" target="_blank">📥 Tải Tài Liệu Gốc</a>
+        <a id="downloadBtn" href="https://drive.google.com/drive/folders/1_HLpPTVR_i_mSlB9WpwjUiW_mY9soJmX?usp=sharing" class="btn btn-download" target="_blank">
+            <i class="fa-solid fa-cloud-arrow-down"></i> Tải Tài Liệu Gốc Ngay
+        </a>
     </div>
 
     <script>
         function unlockContent() {
             // 1. Mở link Shopee Affiliate ở một tab mới
-            window.open("LINK_SHOPEE_AFFILIATE_CUA_BAN_O_DAY", "_blank");
+            window.open("https://s.shopee.vn/2VmY7xpJc6", "_blank");
 
-            // 2. Ẩn nút Shopee đi để người dùng không bấm lại nhiều lần
+            // 2. Ẩn nút Shopee đi 
             document.getElementById("shopeeBtn").style.display = "none";
 
-            // 3. Hiện dòng chữ đếm ngược
-            let countdownText = document.getElementById("countdown-text");
+            // 3. Hiện vùng loading đếm ngược
+            let loadingArea = document.getElementById("loading-area");
             let timerSpan = document.getElementById("timer");
-            countdownText.style.display = "block";
+            loadingArea.style.display = "block";
 
-            // 4. Thiết lập thời gian đếm ngược (ví dụ 5 giây)
+            // 4. Thiết lập thời gian đếm ngược (5 giây)
             let timeLeft = 5;
             
             let countdownInterval = setInterval(function() {
@@ -82,12 +207,16 @@
 
                 if (timeLeft <= 0) {
                     clearInterval(countdownInterval);
-                    // Ẩn dòng chữ đếm ngược
-                    countdownText.style.display = "none";
-                    // Hiện nút tải tài liệu gốc
-                    document.getElementById("downloadBtn").style.display = "block";
+                    // Ẩn vùng đếm ngược
+                    loadingArea.style.display = "none";
+                    // Hiện nút tải tài liệu gốc với hiệu ứng mượt
+                    let downloadBtn = document.getElementById("downloadBtn");
+                    downloadBtn.style.display = "flex";
+                    // Reset animation để nút download nảy nhẹ khi xuất hiện
+                    downloadBtn.style.animation = "none";
+                    setTimeout(() => { downloadBtn.style.animation = "fadeIn 0.5s ease-out forwards"; }, 10);
                 }
-            }, 1000); // 1000ms = 1 giây
+            }, 1000);
         }
     </script>
 
