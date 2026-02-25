@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài Liệu Trading Insight</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #121212; 
+            color: #ffffff; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+        }
+        .container { 
+            background-color: #1e1e1e; 
+            padding: 40px; 
+            border-radius: 12px; 
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5); 
+            text-align: center; 
+            max-width: 450px; 
+            width: 90%; 
+        }
+        h2 { color: #f3ba2f; margin-bottom: 10px; }
+        p { color: #cccccc; font-size: 15px; line-height: 1.5; margin-bottom: 25px; }
+        .btn { 
+            display: block; 
+            width: 100%; 
+            padding: 14px 0; 
+            margin: 10px 0; 
+            border-radius: 6px; 
+            text-decoration: none; 
+            font-weight: bold; 
+            font-size: 16px; 
+            cursor: pointer; 
+            border: none; 
+            transition: 0.3s ease; 
+            box-sizing: border-box;
+        }
+        .btn-shopee { background-color: #ee4d2d; color: white; }
+        .btn-shopee:hover { background-color: #d73a1e; }
+        .btn-download { background-color: #28a745; color: white; display: none; }
+        .btn-download:hover { background-color: #218838; }
+        #countdown-text { margin-top: 20px; font-size: 14px; color: #f3ba2f; display: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Tài Liệu Cấu Trúc Thị Trường</h2>
+        <p>Để duy trì hoạt động cộng đồng, bạn vui lòng ghé thăm nhà tài trợ của chúng tôi trước khi lấy link tải gốc nhé</p>
+
+        <button id="shopeeBtn" class="btn btn-shopee" onclick="unlockContent()">👉 Bấm vào đây để mở khóa link</button>
+
+        <div id="countdown-text">Đang xác thực... Vui lòng đợi <span id="timer">5</span> giây</div>
+
+        <a id="downloadBtn" href="LINK_GOOGLE_DRIVE_HAY_MEGA_CUA_BAN_O_DAY" class="btn btn-download" target="_blank">📥 Tải Tài Liệu Gốc</a>
+    </div>
+
+    <script>
+        function unlockContent() {
+            // 1. Mở link Shopee Affiliate ở một tab mới
+            window.open("LINK_SHOPEE_AFFILIATE_CUA_BAN_O_DAY", "_blank");
+
+            // 2. Ẩn nút Shopee đi để người dùng không bấm lại nhiều lần
+            document.getElementById("shopeeBtn").style.display = "none";
+
+            // 3. Hiện dòng chữ đếm ngược
+            let countdownText = document.getElementById("countdown-text");
+            let timerSpan = document.getElementById("timer");
+            countdownText.style.display = "block";
+
+            // 4. Thiết lập thời gian đếm ngược (ví dụ 5 giây)
+            let timeLeft = 5;
+            
+            let countdownInterval = setInterval(function() {
+                timeLeft--;
+                timerSpan.innerText = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    // Ẩn dòng chữ đếm ngược
+                    countdownText.style.display = "none";
+                    // Hiện nút tải tài liệu gốc
+                    document.getElementById("downloadBtn").style.display = "block";
+                }
+            }, 1000); // 1000ms = 1 giây
+        }
+    </script>
+
+</body>
+</html>
