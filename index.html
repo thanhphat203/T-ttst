@@ -402,7 +402,7 @@
             Cộng Đồng Giao Dịch Thực Chiến
         </div>
 
-        <h1 class="text-1xl md:text-2xl lg:text-3xl xl:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-200 to-gray-500 mb-6 drop-shadow-2xl leading-[1.35] tracking-tight">
+        <h1 class="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-200 to-gray-500 mb-6 drop-shadow-2xl leading-[1.35] tracking-tight">
             TRI THỨC LÀ SỨC MẠNH<br>
             <span class="shine-text">THĂNG CẤP ĐỂ DẪN ĐẦU</span>
         </h1>
@@ -678,7 +678,7 @@
         </div>
 
         <div class="w-full pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-5 text-sm text-gray-500">
-            <p>© 2026 Trading Insight. Xây dựng cho những người dẫn đầu.</p>
+            <p>© 2026 Trading Insight xây dựng cho những người dẫn đầu !!!</p>
             <div class="flex gap-6 font-medium">
                 <a href="#" class="hover:text-emerald-400 transition-colors">Điều khoản</a>
                 <a href="#" class="hover:text-emerald-400 transition-colors">Bảo mật</a>
@@ -712,30 +712,146 @@
     // ===========================
     // CONFIG
     // ===========================
-    const BOT_USERNAME = "congcupremium_bot";
+    // ==============================================
+    // ⚙️  CẤU HÌNH — Chỉ cần sửa 2 chỗ:
+    //   1. BOT_USERNAME  → tên bot Telegram của bạn
+    //   2. link: "..."   → dán link tài liệu vào từng mục
+    //      Để trống ""   → nút sẽ dẫn sang bot Telegram
+    // ==============================================
+    const BOT_USERNAME = "TenBotCuaBan_bot";
 
     const documents = [
-        // Cơ bản
-        { id: "cex_dex",      title: "Sàn CEX, DEX là gì",                  desc: "Kiến thức vỡ lòng về các sàn giao dịch trong thị trường Crypto.",     level: 1,  cat: "coban",   icon: "fa-building-columns" },
-        { id: "trade_coban",  title: "Kiến Thức Trade Cơ Bản, Nâng Cao",    desc: "Nền tảng vững chắc cho người mới bắt đầu bước chân vào thị trường.",   level: 2,  cat: "coban",   icon: "fa-book-open" },
-        { id: "lythuyet_dow", title: "Lý thuyết Dow tóm tắt chi tiết",       desc: "Nền móng của phân tích kỹ thuật hiện đại.",                             level: 3,  cat: "coban",   icon: "fa-chart-line" },
-        { id: "xuhuong",      title: "Xu hướng thị trường",                   desc: "Nhận biết điều kiện và xu hướng cấu trúc thị trường.",                 level: 4,  cat: "coban",   icon: "fa-arrow-trend-up" },
-        { id: "14_chibao",    title: "14 Chỉ báo giá",                        desc: "Tổng hợp cách sử dụng các indicator phổ biến nhất.",                   level: 5,  cat: "coban",   icon: "fa-chart-pie" },
-        { id: "rsi",          title: "RSI thần công (Eng, Tiếng Việt)",       desc: "Tài liệu chuyên sâu về chỉ số sức mạnh tương đối (RSI).",              level: 6,  cat: "coban",   icon: "fa-wave-square" },
-        { id: "kynang",       title: "Kỹ Năng Quan Trọng Của Trader",         desc: "Những thói quen và kỹ năng sống còn trong giao dịch.",                 level: 7,  cat: "coban",   icon: "fa-user-ninja" },
-        { id: "rr",           title: "Cách tăng tỷ lệ Risk Reward",           desc: "Tối ưu hóa lợi nhuận và quản trị rủi ro hiệu quả.",                   level: 8,  cat: "coban",   icon: "fa-scale-balanced" },
-        // Nâng cao
-        { id: "ptkt_1_20",    title: "Bộ Phân Tích Kỹ Thuật 1-20",           desc: "Chuỗi tài liệu phân tích kỹ thuật toàn diện.",                         level: 15, cat: "nangcao", icon: "fa-microscope" },
-        { id: "mohinh_123",   title: "Mô Hình Giá 123 ba đạo",               desc: "Tuyệt chiêu giao dịch với mô hình giá kinh điển.",                     level: 18, cat: "nangcao", icon: "fa-draw-polygon" },
-        { id: "nhapmon_sd",   title: "Nhập môn Supply-Demand",                desc: "Làm quen với phương pháp giao dịch Cung - Cầu.",                       level: 20, cat: "nangcao", icon: "fa-boxes-stacked" },
-        { id: "cungcau",      title: "Cung Cầu Chuyên Sâu",                   desc: "Đi sâu vào bản chất dòng tiền qua các vùng Supply/Demand.",           level: 25, cat: "nangcao", icon: "fa-layer-group" },
-        { id: "ytc",          title: "Price Action YTC 1-6",                  desc: "Bộ tài liệu hành vi giá thực chiến đỉnh cao.",                         level: 30, cat: "nangcao", icon: "fa-eye" },
-        { id: "dongtien",     title: "Dòng tiền chạy qua các layer",          desc: "Phân tích vĩ mô và sự luân chuyển vốn trong thị trường.",              level: 35, cat: "nangcao", icon: "fa-money-bill-transfer" },
-        // Pro
-        { id: "setup_clc",    title: "Setup Chất Lượng Cao",                  desc: "Bộ sưu tập các điểm vào lệnh có xác suất thắng lớn.",                 level: 50, cat: "pro",     icon: "fa-crosshairs" },
-        { id: "hethong_mmm",  title: "Hệ thống MMM",                          desc: "Gói tài liệu phương pháp giao dịch hệ thống độc quyền.",               level: 60, cat: "pro",     icon: "fa-gears" },
-        { id: "smc",          title: "Smart Money Concept (SMC)",              desc: "Giao dịch theo dấu chân cá mập — Smart Money.",                       level: 70, cat: "pro",     icon: "fa-user-tie" },
-        { id: "trading_to_win","title": "Trading To Win",                      desc: "Làm chủ tâm lý và tư duy của một nhà giao dịch chiến thắng.",         level: 80, cat: "pro",     icon: "fa-trophy" }
+        // ── CƠ BẢN ──────────────────────────────────────────────────────────
+        {
+            id: "cex_dex",
+            title: "Sàn CEX, DEX là gì",
+            desc: "Kiến thức vỡ lòng về các sàn giao dịch trong thị trường Crypto.",
+            level: 1, cat: "coban", icon: "fa-building-columns",
+            link: "https://drive.google.com/drive/u/1/folders/1_HLpPTVR_i_mSlB9WpwjUiW_mY9soJmX"   // 👈 dán link tài liệu vào đây
+        },
+        {
+            id: "trade_coban",
+            title: "Kiến Thức Trade Cơ Bản, Nâng Cao",
+            desc: "Nền tảng vững chắc cho người mới bắt đầu bước chân vào thị trường.",
+            level: 2, cat: "coban", icon: "fa-book-open",
+            link: "https://drive.google.com/drive/u/1/folders/1_HLpPTVR_i_mSlB9WpwjUiW_mY9soJmX"
+        },
+        {
+            id: "lythuyet_dow",
+            title: "Lý thuyết Dow tóm tắt chi tiết",
+            desc: "Nền móng của phân tích kỹ thuật hiện đại.",
+            level: 3, cat: "coban", icon: "fa-chart-line",
+            link: "https://drive.google.com/drive/u/1/folders/1_HLpPTVR_i_mSlB9WpwjUiW_mY9soJmX"
+        },
+        {
+            id: "xuhuong",
+            title: "Xu hướng thị trường",
+            desc: "Nhận biết điều kiện và xu hướng cấu trúc thị trường.",
+            level: 4, cat: "coban", icon: "fa-arrow-trend-up",
+            link: "https://drive.google.com/drive/u/1/folders/1_HLpPTVR_i_mSlB9WpwjUiW_mY9soJmX"
+        },
+        {
+            id: "14_chibao",
+            title: "14 Chỉ báo giá",
+            desc: "Tổng hợp cách sử dụng các indicator phổ biến nhất.",
+            level: 5, cat: "coban", icon: "fa-chart-pie",
+            link: "https://drive.google.com/drive/u/1/folders/1_HLpPTVR_i_mSlB9WpwjUiW_mY9soJmX"
+        },
+        {
+            id: "rsi",
+            title: "RSI thần công (Eng, Tiếng Việt)",
+            desc: "Tài liệu chuyên sâu về chỉ số sức mạnh tương đối (RSI).",
+            level: 6, cat: "coban", icon: "fa-wave-square",
+            link: "https://drive.google.com/drive/u/1/folders/1_HLpPTVR_i_mSlB9WpwjUiW_mY9soJmX"
+        },
+        {
+            id: "kynang",
+            title: "Kỹ Năng Quan Trọng Của Trader",
+            desc: "Những thói quen và kỹ năng sống còn trong giao dịch.",
+            level: 7, cat: "coban", icon: "fa-user-ninja",
+            link: "https://drive.google.com/drive/u/1/folders/1_HLpPTVR_i_mSlB9WpwjUiW_mY9soJmX"
+        },
+        {
+            id: "rr",
+            title: "Cách tăng tỷ lệ Risk Reward",
+            desc: "Tối ưu hóa lợi nhuận và quản trị rủi ro hiệu quả.",
+            level: 8, cat: "coban", icon: "fa-scale-balanced",
+            link: "https://drive.google.com/drive/u/1/folders/1_HLpPTVR_i_mSlB9WpwjUiW_mY9soJmX"
+        },
+
+        // ── NÂNG CAO ─────────────────────────────────────────────────────────
+        {
+            id: "ptkt_1_20",
+            title: "Bộ Phân Tích Kỹ Thuật 1-20",
+            desc: "Chuỗi tài liệu phân tích kỹ thuật toàn diện.",
+            level: 15, cat: "nangcao", icon: "fa-microscope",
+            link: "https://drive.google.com/drive/u/1/folders/1_HLpPTVR_i_mSlB9WpwjUiW_mY9soJmX"
+        },
+        {
+            id: "mohinh_123",
+            title: "Mô Hình Giá 123 ba đạo",
+            desc: "Tuyệt chiêu giao dịch với mô hình giá kinh điển.",
+            level: 18, cat: "nangcao", icon: "fa-draw-polygon",
+            link: ""
+        },
+        {
+            id: "nhapmon_sd",
+            title: "Nhập môn Supply-Demand",
+            desc: "Làm quen với phương pháp giao dịch Cung - Cầu.",
+            level: 20, cat: "nangcao", icon: "fa-boxes-stacked",
+            link: ""
+        },
+        {
+            id: "cungcau",
+            title: "Cung Cầu Chuyên Sâu",
+            desc: "Đi sâu vào bản chất dòng tiền qua các vùng Supply/Demand.",
+            level: 25, cat: "nangcao", icon: "fa-layer-group",
+            link: ""
+        },
+        {
+            id: "ytc",
+            title: "Price Action YTC 1-6",
+            desc: "Bộ tài liệu hành vi giá thực chiến đỉnh cao.",
+            level: 30, cat: "nangcao", icon: "fa-eye",
+            link: ""
+        },
+        {
+            id: "dongtien",
+            title: "Dòng tiền chạy qua các layer",
+            desc: "Phân tích vĩ mô và sự luân chuyển vốn trong thị trường.",
+            level: 35, cat: "nangcao", icon: "fa-money-bill-transfer",
+            link: ""
+        },
+
+        // ── PRO ──────────────────────────────────────────────────────────────
+        {
+            id: "setup_clc",
+            title: "Setup Chất Lượng Cao",
+            desc: "Bộ sưu tập các điểm vào lệnh có xác suất thắng lớn.",
+            level: 50, cat: "pro", icon: "fa-crosshairs",
+            link: ""
+        },
+        {
+            id: "hethong_mmm",
+            title: "Hệ thống MMM",
+            desc: "Gói tài liệu phương pháp giao dịch hệ thống độc quyền.",
+            level: 60, cat: "pro", icon: "fa-gears",
+            link: ""
+        },
+        {
+            id: "smc",
+            title: "Smart Money Concept (SMC)",
+            desc: "Giao dịch theo dấu chân cá mập — Smart Money.",
+            level: 70, cat: "pro", icon: "fa-user-tie",
+            link: ""
+        },
+        {
+            id: "trading_to_win",
+            title: "Trading To Win",
+            desc: "Làm chủ tâm lý và tư duy của một nhà giao dịch chiến thắng.",
+            level: 80, cat: "pro", icon: "fa-trophy",
+            link: ""
+        }
     ];
 
     let currentFilter = 'all';
@@ -791,9 +907,11 @@
         const container = document.getElementById('toast-container');
         const toast = document.createElement('div');
         toast.className = 'toast';
-        toast.innerHTML = `<i class="fa-brands ${icon} text-lg ${color}"></i><span>${message}</span>`;
+        // fa-file-arrow-down is solid, fa-telegram is brand
+        const isBrand = ['fa-telegram', 'fa-twitter', 'fa-youtube'].includes(icon);
+        const prefix = isBrand ? 'fa-brands' : 'fa-solid';
+        toast.innerHTML = `<i class="${prefix} ${icon} text-lg ${color}"></i><span>${message}</span>`;
         container.appendChild(toast);
-
         setTimeout(() => {
             toast.classList.add('hiding');
             setTimeout(() => toast.remove(), 320);
@@ -960,17 +1078,29 @@
                     </div>
                 </div>
 
-                <!-- CTA Button -->
-                <a href="https://t.me/${BOT_USERNAME}?start=${doc.id}" target="_blank"
-                   onclick="showToast('Đang chuyển đến bot Telegram...', 'fa-telegram', '${c.text}')"
-                   class="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-[#0a1020] text-white font-bold transition-all duration-300 relative overflow-hidden group/btn border border-white/8 hover:border-transparent hover:shadow-[0_0_20px_${c.glow}] active:scale-[0.97] text-sm">
-                    <span class="relative z-10 flex items-center gap-2 transition-all duration-300">
-                        <i class="fa-brands fa-telegram text-lg group-hover/btn:scale-110 transition-transform"></i>
-                        Mở Khóa Ngay
-                    </span>
-                    <div class="absolute inset-0 h-full w-0 transition-all duration-300 ease-out group-hover/btn:w-full z-0"
-                         style="background: linear-gradient(90deg, ${c.lvColor}33, ${c.lvColor}22)"></div>
-                </a>
+                <!-- CTA Button — tự động chọn link trực tiếp hoặc bot -->
+                ${doc.link
+                    ? `<a href="${doc.link}" target="_blank" rel="noopener"
+                          onclick="showToast('Đang mở tài liệu...', 'fa-file-arrow-down', '${c.text}')"
+                          class="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-[#0a1020] text-white font-bold transition-all duration-300 relative overflow-hidden group/btn border border-white/8 hover:border-transparent hover:shadow-[0_0_20px_${c.glow}] active:scale-[0.97] text-sm">
+                           <span class="relative z-10 flex items-center gap-2">
+                               <i class="fa-solid fa-file-arrow-down text-lg group-hover/btn:scale-110 transition-transform"></i>
+                               Tải Tài Liệu
+                           </span>
+                           <div class="absolute inset-0 h-full w-0 transition-all duration-300 ease-out group-hover/btn:w-full z-0"
+                                style="background: linear-gradient(90deg, ${c.lvColor}40, ${c.lvColor}20)"></div>
+                       </a>`
+                    : `<a href="https://t.me/${BOT_USERNAME}?start=${doc.id}" target="_blank" rel="noopener"
+                          onclick="showToast('Đang chuyển đến bot Telegram...', 'fa-telegram', '${c.text}')"
+                          class="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-[#0a1020] text-white font-bold transition-all duration-300 relative overflow-hidden group/btn border border-white/8 hover:border-transparent hover:shadow-[0_0_20px_${c.glow}] active:scale-[0.97] text-sm">
+                           <span class="relative z-10 flex items-center gap-2">
+                               <i class="fa-brands fa-telegram text-lg group-hover/btn:scale-110 transition-transform"></i>
+                               Mở Khóa Qua Bot
+                           </span>
+                           <div class="absolute inset-0 h-full w-0 transition-all duration-300 ease-out group-hover/btn:w-full z-0"
+                                style="background: linear-gradient(90deg, ${c.lvColor}33, ${c.lvColor}22)"></div>
+                       </a>`
+                }
             `;
             container.appendChild(card);
 
