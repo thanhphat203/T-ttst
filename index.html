@@ -259,10 +259,6 @@
         /* ===== XP PROGRESS BAR ===== */
         .xp-bar-fill { transition: width 1.2s cubic-bezier(0.25, 1, 0.5, 1); }
 
-        /* ===== TYPING CURSOR ===== */
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        .cursor { animation: blink 1s step-end infinite; }
-
         /* ===== GRADIENT TEXT SHINE ===== */
         @keyframes shimmer {
             0% { background-position: -200% center; }
@@ -291,16 +287,6 @@
             animation: spin 0.8s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* ===== SKELETON ===== */
-        @keyframes skeletonPulse {
-            0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; }
-        }
-        .skeleton {
-            background: rgba(30,41,59,0.6);
-            animation: skeletonPulse 1.5s ease-in-out infinite;
-            border-radius: 12px;
-        }
     </style>
 </head>
 <body class="antialiased selection:bg-emerald-500 selection:text-white">
@@ -332,7 +318,6 @@
 <nav class="fixed top-3 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-6xl z-50 glass-panel rounded-2xl border border-white/8 transition-all duration-300 px-6 py-3.5" id="navbar">
     <div class="flex justify-between items-center">
 
-        <!-- Logo: chữ thôi, không icon -->
         <a href="#" class="group flex flex-col leading-none">
             <span class="text-[11px] font-bold text-emerald-500 tracking-[0.3em] uppercase mb-0.5 opacity-80"></span>
             <span class="text-xl font-black tracking-[0.12em] text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-100 to-gray-400 group-hover:from-emerald-400 group-hover:to-teal-300 transition-all duration-500">
@@ -340,7 +325,6 @@
             </span>
         </a>
 
-        <!-- Desktop Nav Links — có dot indicator và divider -->
         <div class="hidden md:flex items-center gap-0.5">
             <a href="#tinh-nang" class="nav-link relative px-5 py-2.5 rounded-xl text-sm text-gray-400 font-semibold hover:text-white transition-all duration-200 group">
                 Tư Duy
@@ -359,7 +343,6 @@
         </div>
 
         <div class="flex items-center gap-3">
-            <!-- Live badge + CTA -->
             <div class="hidden lg:flex items-center gap-2 mr-2">
                 <span class="relative flex h-2 w-2">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -372,7 +355,6 @@
                 <i class="fa-brands fa-telegram"></i>
                 <span>Tham Gia Group</span>
             </a>
-            <!-- Hamburger -->
             <div class="md:hidden hamburger" id="hamburger" onclick="toggleMobileMenu()">
                 <span></span><span></span><span></span>
             </div>
@@ -547,11 +529,9 @@
     </div>
 
     <div class="relative reveal">
-        <!-- Vertical Line -->
         <div class="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 roadmap-line opacity-30 hidden md:block"></div>
 
         <div class="flex flex-col gap-8">
-            <!-- Roadmap items -->
             <div class="roadmap-item flex md:flex-row flex-col items-center gap-6 md:gap-0">
                 <div class="md:w-1/2 md:pr-12 md:text-right order-2 md:order-1">
                     <div class="glass-card p-6 rounded-2xl border-blue-500/20 hover:border-blue-500/50 inline-block w-full">
@@ -607,7 +587,6 @@
 
         <!-- Search + Filter Controls -->
         <div class="flex flex-col lg:flex-row justify-between items-center gap-6 mb-12 reveal">
-            <!-- Search -->
             <div class="relative w-full lg:w-96 group">
                 <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
                     <i class="fa-solid fa-magnifying-glass text-gray-500 group-focus-within:text-emerald-400 transition-colors duration-300 text-sm"></i>
@@ -620,7 +599,6 @@
                 </div>
             </div>
 
-            <!-- Filter buttons -->
             <div class="flex flex-wrap justify-center gap-2 p-2 bg-[#0f172a]/60 backdrop-blur-md rounded-2xl border border-white/5" id="filter-buttons">
                 <button onclick="filterDocs('all', this)" class="filter-btn active px-5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-[#020617] font-bold transition-all duration-300 text-sm shadow-[0_0_12px_rgba(16,185,129,0.25)]">
                     Tất Cả <span class="filter-count" id="count-all">0</span>
@@ -637,7 +615,6 @@
             </div>
         </div>
 
-        <!-- Results count -->
         <div class="mb-6 reveal" id="results-label">
             <span class="text-sm text-gray-500"></span>
         </div>
@@ -709,172 +686,49 @@
 <div class="fixed inset-0 z-[-1] bg-grid pointer-events-none"></div>
 
 <script>
-    // ===========================
-    // CONFIG
-    // ===========================
-    // ==============================================
-    // ⚙️  CẤU HÌNH — Chỉ cần sửa 2 chỗ:
-    //   1. BOT_USERNAME  → tên bot Telegram của bạn
-    //   2. link: "..."   → dán link tài liệu vào từng mục
-    //      Để trống ""   → nút sẽ dẫn sang bot Telegram
-    // ==============================================
-    const BOT_USERNAME = "TenBotCuaBan_bot";
+    // ⚠️ CHỈNH TÊN BOT CỦA BẠN TẠI ĐÂY
+    const BOT_USERNAME = "congcupremium_bot";
 
     const documents = [
-        // ── CƠ BẢN ──────────────────────────────────────────────────────────
-        {
-            id: "cex_dex",
-            title: "Sàn CEX, DEX là gì",
-            desc: "Kiến thức vỡ lòng về các sàn giao dịch trong thị trường Crypto.",
-            level: 1, cat: "coban", icon: "fa-building-columns",
-            link: "https://drive.google.com/drive/u/1/folders/1_HLpPTVR_i_mSlB9WpwjUiW_mY9soJmX"   // 👈 dán link tài liệu vào đây
-        },
-        {
-            id: "trade_coban",
-            title: "Kiến Thức Trade Cơ Bản, Nâng Cao",
-            desc: "Nền tảng vững chắc cho người mới bắt đầu bước chân vào thị trường.",
-            level: 2, cat: "coban", icon: "fa-book-open",
-            link: "https://drive.google.com/drive/u/1/folders/1_HLpPTVR_i_mSlB9WpwjUiW_mY9soJmX"
-        },
-        {
-            id: "lythuyet_dow",
-            title: "Lý thuyết Dow tóm tắt chi tiết",
-            desc: "Nền móng của phân tích kỹ thuật hiện đại.",
-            level: 3, cat: "coban", icon: "fa-chart-line",
-            link: "https://drive.google.com/drive/u/1/folders/1_HLpPTVR_i_mSlB9WpwjUiW_mY9soJmX"
-        },
-        {
-            id: "xuhuong",
-            title: "Xu hướng thị trường",
-            desc: "Nhận biết điều kiện và xu hướng cấu trúc thị trường.",
-            level: 4, cat: "coban", icon: "fa-arrow-trend-up",
-            link: "https://drive.google.com/drive/u/1/folders/1_HLpPTVR_i_mSlB9WpwjUiW_mY9soJmX"
-        },
-        {
-            id: "14_chibao",
-            title: "14 Chỉ báo giá",
-            desc: "Tổng hợp cách sử dụng các indicator phổ biến nhất.",
-            level: 5, cat: "coban", icon: "fa-chart-pie",
-            link: "https://drive.google.com/drive/u/1/folders/1_HLpPTVR_i_mSlB9WpwjUiW_mY9soJmX"
-        },
-        {
-            id: "rsi",
-            title: "RSI thần công (Eng, Tiếng Việt)",
-            desc: "Tài liệu chuyên sâu về chỉ số sức mạnh tương đối (RSI).",
-            level: 6, cat: "coban", icon: "fa-wave-square",
-            link: "https://drive.google.com/drive/u/1/folders/1_HLpPTVR_i_mSlB9WpwjUiW_mY9soJmX"
-        },
-        {
-            id: "kynang",
-            title: "Kỹ Năng Quan Trọng Của Trader",
-            desc: "Những thói quen và kỹ năng sống còn trong giao dịch.",
-            level: 7, cat: "coban", icon: "fa-user-ninja",
-            link: "https://drive.google.com/drive/u/1/folders/1_HLpPTVR_i_mSlB9WpwjUiW_mY9soJmX"
-        },
-        {
-            id: "rr",
-            title: "Cách tăng tỷ lệ Risk Reward",
-            desc: "Tối ưu hóa lợi nhuận và quản trị rủi ro hiệu quả.",
-            level: 8, cat: "coban", icon: "fa-scale-balanced",
-            link: "https://drive.google.com/drive/u/1/folders/1_HLpPTVR_i_mSlB9WpwjUiW_mY9soJmX"
-        },
+        // ── CƠ BẢN
+        { id: "cex_dex", title: "Sàn CEX, DEX là gì", desc: "Kiến thức vỡ lòng về các sàn giao dịch trong thị trường Crypto.", level: 1, cat: "coban", icon: "fa-building-columns" },
+        { id: "trade_coban", title: "Kiến Thức Trade Cơ Bản, Nâng Cao", desc: "Nền tảng vững chắc cho người mới bắt đầu bước chân vào thị trường.", level: 2, cat: "coban", icon: "fa-book-open" },
+        { id: "lythuyet_dow", title: "Lý thuyết Dow tóm tắt chi tiết", desc: "Nền móng của phân tích kỹ thuật hiện đại.", level: 3, cat: "coban", icon: "fa-chart-line" },
+        { id: "xuhuong", title: "Xu hướng thị trường", desc: "Nhận biết điều kiện và xu hướng cấu trúc thị trường.", level: 4, cat: "coban", icon: "fa-arrow-trend-up" },
+        { id: "14_chibao", title: "14 Chỉ báo giá", desc: "Tổng hợp cách sử dụng các indicator phổ biến nhất.", level: 5, cat: "coban", icon: "fa-chart-pie" },
+        { id: "rsi", title: "RSI thần công (Eng, Tiếng Việt)", desc: "Tài liệu chuyên sâu về chỉ số sức mạnh tương đối (RSI).", level: 6, cat: "coban", icon: "fa-wave-square" },
+        { id: "kynang", title: "Kỹ Năng Quan Trọng Của Trader", desc: "Những thói quen và kỹ năng sống còn trong giao dịch.", level: 7, cat: "coban", icon: "fa-user-ninja" },
+        { id: "rr", title: "Cách tăng tỷ lệ Risk Reward", desc: "Tối ưu hóa lợi nhuận và quản trị rủi ro hiệu quả.", level: 8, cat: "coban", icon: "fa-scale-balanced" },
 
-        // ── NÂNG CAO ─────────────────────────────────────────────────────────
-        {
-            id: "ptkt_1_20",
-            title: "Bộ Phân Tích Kỹ Thuật 1-20",
-            desc: "Chuỗi tài liệu phân tích kỹ thuật toàn diện.",
-            level: 15, cat: "nangcao", icon: "fa-microscope",
-            link: "https://drive.google.com/drive/u/1/folders/1_HLpPTVR_i_mSlB9WpwjUiW_mY9soJmX"
-        },
-        {
-            id: "mohinh_123",
-            title: "Mô Hình Giá 123 ba đạo",
-            desc: "Tuyệt chiêu giao dịch với mô hình giá kinh điển.",
-            level: 18, cat: "nangcao", icon: "fa-draw-polygon",
-            link: ""
-        },
-        {
-            id: "nhapmon_sd",
-            title: "Nhập môn Supply-Demand",
-            desc: "Làm quen với phương pháp giao dịch Cung - Cầu.",
-            level: 20, cat: "nangcao", icon: "fa-boxes-stacked",
-            link: ""
-        },
-        {
-            id: "cungcau",
-            title: "Cung Cầu Chuyên Sâu",
-            desc: "Đi sâu vào bản chất dòng tiền qua các vùng Supply/Demand.",
-            level: 25, cat: "nangcao", icon: "fa-layer-group",
-            link: ""
-        },
-        {
-            id: "ytc",
-            title: "Price Action YTC 1-6",
-            desc: "Bộ tài liệu hành vi giá thực chiến đỉnh cao.",
-            level: 30, cat: "nangcao", icon: "fa-eye",
-            link: ""
-        },
-        {
-            id: "dongtien",
-            title: "Dòng tiền chạy qua các layer",
-            desc: "Phân tích vĩ mô và sự luân chuyển vốn trong thị trường.",
-            level: 35, cat: "nangcao", icon: "fa-money-bill-transfer",
-            link: ""
-        },
+        // ── NÂNG CAO
+        { id: "ptkt_1_20", title: "Bộ Phân Tích Kỹ Thuật 1-20", desc: "Chuỗi tài liệu phân tích kỹ thuật toàn diện.", level: 15, cat: "nangcao", icon: "fa-microscope" },
+        { id: "mohinh_123", title: "Mô Hình Giá 123 ba đạo", desc: "Tuyệt chiêu giao dịch với mô hình giá kinh điển.", level: 18, cat: "nangcao", icon: "fa-draw-polygon" },
+        { id: "nhapmon_sd", title: "Nhập môn Supply-Demand", desc: "Làm quen với phương pháp giao dịch Cung - Cầu.", level: 20, cat: "nangcao", icon: "fa-boxes-stacked" },
+        { id: "cungcau", title: "Cung Cầu Chuyên Sâu", desc: "Đi sâu vào bản chất dòng tiền qua các vùng Supply/Demand.", level: 25, cat: "nangcao", icon: "fa-layer-group" },
+        { id: "ytc", title: "Price Action YTC 1-6", desc: "Bộ tài liệu hành vi giá thực chiến đỉnh cao.", level: 30, cat: "nangcao", icon: "fa-eye" },
+        { id: "dongtien", title: "Dòng tiền chạy qua các layer", desc: "Phân tích vĩ mô và sự luân chuyển vốn trong thị trường.", level: 35, cat: "nangcao", icon: "fa-money-bill-transfer" },
 
-        // ── PRO ──────────────────────────────────────────────────────────────
-        {
-            id: "setup_clc",
-            title: "Setup Chất Lượng Cao",
-            desc: "Bộ sưu tập các điểm vào lệnh có xác suất thắng lớn.",
-            level: 50, cat: "pro", icon: "fa-crosshairs",
-            link: ""
-        },
-        {
-            id: "hethong_mmm",
-            title: "Hệ thống MMM",
-            desc: "Gói tài liệu phương pháp giao dịch hệ thống độc quyền.",
-            level: 60, cat: "pro", icon: "fa-gears",
-            link: ""
-        },
-        {
-            id: "smc",
-            title: "Smart Money Concept (SMC)",
-            desc: "Giao dịch theo dấu chân cá mập — Smart Money.",
-            level: 70, cat: "pro", icon: "fa-user-tie",
-            link: ""
-        },
-        {
-            id: "trading_to_win",
-            title: "Trading To Win",
-            desc: "Làm chủ tâm lý và tư duy của một nhà giao dịch chiến thắng.",
-            level: 80, cat: "pro", icon: "fa-trophy",
-            link: ""
-        }
+        // ── PRO
+        { id: "setup_clc", title: "Setup Chất Lượng Cao", desc: "Bộ sưu tập các điểm vào lệnh có xác suất thắng lớn.", level: 50, cat: "pro", icon: "fa-crosshairs" },
+        { id: "hethong_mmm", title: "Hệ thống MMM", desc: "Gói tài liệu phương pháp giao dịch hệ thống độc quyền.", level: 60, cat: "pro", icon: "fa-gears" },
+        { id: "smc", title: "Smart Money Concept (SMC)", desc: "Giao dịch theo dấu chân cá mập — Smart Money.", level: 70, cat: "pro", icon: "fa-user-tie" },
+        { id: "trading_to_win", title: "Trading To Win", desc: "Làm chủ tâm lý và tư duy của một nhà giao dịch chiến thắng.", level: 80, cat: "pro", icon: "fa-trophy" }
     ];
 
     let currentFilter = 'all';
 
-    // ===========================
-    // PAGE LOADER
-    // ===========================
     window.addEventListener('load', () => {
         setTimeout(() => {
             document.getElementById('page-loader').classList.add('hidden');
         }, 800);
     });
 
-    // ===========================
-    // SCROLL PROGRESS BAR
-    // ===========================
     window.addEventListener('scroll', () => {
         const scrollTop = window.scrollY;
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
         const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
         document.getElementById('scroll-progress').style.width = progress + '%';
 
-        // Back to top visibility
         const btn = document.getElementById('back-to-top');
         if (scrollTop > 500) btn.classList.add('visible');
         else btn.classList.remove('visible');
@@ -884,9 +738,6 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // ===========================
-    // MOBILE MENU
-    // ===========================
     function toggleMobileMenu() {
         const menu = document.getElementById('mobile-menu');
         const ham = document.getElementById('hamburger');
@@ -894,20 +745,17 @@
         ham.classList.toggle('active');
         document.body.style.overflow = isOpen ? 'hidden' : '';
     }
+    
     function closeMobileMenu() {
         document.getElementById('mobile-menu').classList.remove('open');
         document.getElementById('hamburger').classList.remove('active');
         document.body.style.overflow = '';
     }
 
-    // ===========================
-    // TOAST NOTIFICATION
-    // ===========================
     function showToast(message, icon = 'fa-telegram', color = 'text-emerald-400') {
         const container = document.getElementById('toast-container');
         const toast = document.createElement('div');
         toast.className = 'toast';
-        // fa-file-arrow-down is solid, fa-telegram is brand
         const isBrand = ['fa-telegram', 'fa-twitter', 'fa-youtube'].includes(icon);
         const prefix = isBrand ? 'fa-brands' : 'fa-solid';
         toast.innerHTML = `<i class="${prefix} ${icon} text-lg ${color}"></i><span>${message}</span>`;
@@ -918,9 +766,6 @@
         }, 3500);
     }
 
-    // ===========================
-    // COUNT-UP ANIMATION
-    // ===========================
     function animateCounter(el) {
         const target = parseInt(el.dataset.counter);
         const suffix = el.dataset.suffix || '';
@@ -938,9 +783,6 @@
         requestAnimationFrame(step);
     }
 
-    // ===========================
-    // SCROLL REVEAL + COUNTER TRIGGER
-    // ===========================
     let countersTriggered = false;
 
     function initScrollAnimations() {
@@ -957,7 +799,6 @@
 
         reveals.forEach(el => observer.observe(el));
 
-        // Counter trigger
         const statsSection = document.getElementById('stats');
         if (statsSection) {
             const counterObserver = new IntersectionObserver((entries) => {
@@ -971,9 +812,6 @@
         }
     }
 
-    // ===========================
-    // UPDATE FILTER COUNTS
-    // ===========================
     function updateFilterCounts(searchTerm = '') {
         const cats = ['all', 'coban', 'nangcao', 'pro'];
         cats.forEach(cat => {
@@ -989,9 +827,6 @@
         });
     }
 
-    // ===========================
-    // RENDER DOCUMENTS
-    // ===========================
     function renderDocs(searchTerm = '') {
         const container = document.getElementById('docs-container');
         const label = document.getElementById('results-label');
@@ -1042,9 +877,7 @@
             const card = document.createElement('div');
             card.className = `glass-card rounded-[2rem] p-8 flex flex-col h-full relative group doc-card-anim border ${c.border}`;
             card.style.animationDelay = animDelay;
-            card.style.setProperty('--hover-glow', c.glow);
             card.innerHTML = `
-                <!-- Level badge with tooltip -->
                 <div class="absolute top-0 right-0 lv-badge-wrap z-10">
                     <div class="${c.tagBg} backdrop-blur-md px-4 py-2 rounded-bl-3xl rounded-tr-[2rem] border-l border-b border-white/10 text-xs font-mono ${c.text} font-black flex items-center gap-1.5">
                         <i class="fa-solid fa-lock text-[10px] opacity-60"></i> Lv ${doc.level}
@@ -1052,22 +885,18 @@
                     <div class="lv-tooltip">Cần Level ${doc.level} để mở khóa</div>
                 </div>
 
-                <!-- Icon -->
                 <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-7 ${c.bg} ${c.text} border ${c.border} group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-500"
                      style="box-shadow: 0 0 16px ${c.iconGlow}">
                     <i class="fa-solid ${doc.icon}"></i>
                 </div>
 
-                <!-- Category tag -->
                 <div class="mb-4">
                     <span class="text-[10px] font-black uppercase tracking-[0.15em] ${c.text} opacity-70">${catLabels[doc.cat]}</span>
                 </div>
 
-                <!-- Title + Desc -->
                 <h3 class="text-xl font-black mb-2 text-white group-hover:${c.text} transition-colors duration-300 leading-snug">${doc.title}</h3>
                 <p class="text-gray-400 text-sm mb-6 flex-grow leading-relaxed">${doc.desc}</p>
 
-                <!-- XP Bar -->
                 <div class="mb-7">
                     <div class="flex justify-between items-center mb-1.5">
                         <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">XP Yêu Cầu</span>
@@ -1078,33 +907,20 @@
                     </div>
                 </div>
 
-                <!-- CTA Button — tự động chọn link trực tiếp hoặc bot -->
-                ${doc.link
-                    ? `<a href="${doc.link}" target="_blank" rel="noopener"
-                          onclick="showToast('Đang mở tài liệu...', 'fa-file-arrow-down', '${c.text}')"
-                          class="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-[#0a1020] text-white font-bold transition-all duration-300 relative overflow-hidden group/btn border border-white/8 hover:border-transparent hover:shadow-[0_0_20px_${c.glow}] active:scale-[0.97] text-sm">
-                           <span class="relative z-10 flex items-center gap-2">
-                               <i class="fa-solid fa-file-arrow-down text-lg group-hover/btn:scale-110 transition-transform"></i>
-                               Tải Tài Liệu
-                           </span>
-                           <div class="absolute inset-0 h-full w-0 transition-all duration-300 ease-out group-hover/btn:w-full z-0"
-                                style="background: linear-gradient(90deg, ${c.lvColor}40, ${c.lvColor}20)"></div>
-                       </a>`
-                    : `<a href="https://t.me/${BOT_USERNAME}?start=${doc.id}" target="_blank" rel="noopener"
-                          onclick="showToast('Đang chuyển đến bot Telegram...', 'fa-telegram', '${c.text}')"
-                          class="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-[#0a1020] text-white font-bold transition-all duration-300 relative overflow-hidden group/btn border border-white/8 hover:border-transparent hover:shadow-[0_0_20px_${c.glow}] active:scale-[0.97] text-sm">
-                           <span class="relative z-10 flex items-center gap-2">
-                               <i class="fa-brands fa-telegram text-lg group-hover/btn:scale-110 transition-transform"></i>
-                               Mở Khóa Qua Bot
-                           </span>
-                           <div class="absolute inset-0 h-full w-0 transition-all duration-300 ease-out group-hover/btn:w-full z-0"
-                                style="background: linear-gradient(90deg, ${c.lvColor}33, ${c.lvColor}22)"></div>
-                       </a>`
-                }
+                <!-- ⚠️ TẤT CẢ CÁC NÚT ĐỀU ĐƯỢC CHUYỂN VỀ BOT TELEGRAM ĐỂ KIỂM DUYỆT -->
+                <a href="https://t.me/${BOT_USERNAME}?start=${doc.id}" target="_blank" rel="noopener"
+                   onclick="showToast('Đang chuyển đến bot Telegram...', 'fa-telegram', '${c.text}')"
+                   class="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-[#0a1020] text-white font-bold transition-all duration-300 relative overflow-hidden group/btn border border-white/8 hover:border-transparent hover:shadow-[0_0_20px_${c.glow}] active:scale-[0.97] text-sm">
+                    <span class="relative z-10 flex items-center gap-2">
+                        <i class="fa-brands fa-telegram text-lg group-hover/btn:scale-110 transition-transform"></i>
+                        Mở Khóa Qua Bot
+                    </span>
+                    <div class="absolute inset-0 h-full w-0 transition-all duration-300 ease-out group-hover/btn:w-full z-0"
+                         style="background: linear-gradient(90deg, ${c.lvColor}33, ${c.lvColor}22)"></div>
+                </a>
             `;
             container.appendChild(card);
 
-            // Animate XP bar after slight delay
             setTimeout(() => {
                 const bar = card.querySelector('.xp-bar-fill');
                 if (bar) bar.style.width = bar.dataset.width;
@@ -1112,9 +928,6 @@
         });
     }
 
-    // ===========================
-    // FILTER DOCS
-    // ===========================
     function filterDocs(cat, btnEl) {
         currentFilter = cat;
         document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -1128,9 +941,6 @@
         renderDocs(document.getElementById('searchInput').value);
     }
 
-    // ===========================
-    // KEYBOARD SHORTCUT (/ to search)
-    // ===========================
     document.addEventListener('keydown', (e) => {
         if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
             e.preventDefault();
@@ -1143,9 +953,6 @@
         }
     });
 
-    // ===========================
-    // INIT
-    // ===========================
     renderDocs();
     initScrollAnimations();
 </script>
