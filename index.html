@@ -6,431 +6,1018 @@
     <title>Trading Insight - Hệ Sinh Thái Độc Quyền</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
     <style>
+        /* ===== BASE ===== */
+        *, *::before, *::after { box-sizing: border-box; }
         body {
             background-color: #020617;
             color: #e2e8f0;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Be Vietnam Pro', sans-serif;
             scroll-behavior: smooth;
             overflow-x: hidden;
         }
 
-        /* Tùy chỉnh thanh cuộn */
-        ::-webkit-scrollbar { width: 8px; }
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #020617; }
-        ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #059669; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(#10b981, #0ea5e9); border-radius: 10px; }
 
-        /* Background Tech Grid */
+        /* ===== SCROLL PROGRESS BAR ===== */
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 3px; z-index: 9999;
+            background: linear-gradient(90deg, #10b981, #06b6d4, #3b82f6);
+            width: 0%; transition: width 0.1s linear;
+            box-shadow: 0 0 10px rgba(16,185,129,0.6);
+        }
+
+        /* ===== GRID BG ===== */
         .bg-grid {
             background-size: 40px 40px;
-            background-image: 
-                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px), 
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-image:
+                linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
             mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
             -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
         }
 
-        /* Glassmorphism Nâng Cấp */
+        /* ===== GLASS ===== */
         .glass-panel {
             background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
         }
-        
         .glass-card {
-            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.6) 100%);
+            background: linear-gradient(145deg, rgba(30,41,59,0.4) 0%, rgba(15,23,42,0.6) 100%);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255,255,255,0.05);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        
         .glass-card:hover {
             transform: translateY(-8px) scale(1.02);
-            border-color: rgba(16, 185, 129, 0.4);
-            box-shadow: 0 20px 40px -10px rgba(16, 185, 129, 0.2);
+            border-color: rgba(16,185,129,0.4);
+            box-shadow: 0 20px 40px -10px rgba(16,185,129,0.2);
         }
 
-        /* Trượt ảnh */
+        /* ===== IMAGE ZOOM ===== */
         .img-zoom { overflow: hidden; border-radius: 1.5rem; }
         .img-zoom img { transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .img-zoom:hover img { transform: scale(1.08); }
 
-        /* Hiệu ứng hạt ánh sáng lơ lửng */
+        /* ===== ORBS ===== */
         .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            z-index: 0;
-            animation: float 12s infinite ease-in-out alternate;
+            position: absolute; border-radius: 50%;
+            filter: blur(80px); z-index: 0;
+            animation: floatOrb 12s infinite ease-in-out alternate;
         }
-        .orb-1 { width: 400px; height: 400px; background: rgba(16, 185, 129, 0.15); top: 5%; left: 15%; animation-delay: 0s; }
-        .orb-2 { width: 500px; height: 500px; background: rgba(59, 130, 246, 0.12); bottom: 5%; right: 10%; animation-delay: -6s; }
-        .orb-3 { width: 300px; height: 300px; background: rgba(168, 85, 247, 0.1); top: 50%; left: 50%; transform: translate(-50%, -50%); animation: pulse 8s infinite alternate; }
-        
-        @keyframes float {
+        .orb-1 { width: 400px; height: 400px; background: rgba(16,185,129,0.15); top: 5%; left: 15%; animation-delay: 0s; }
+        .orb-2 { width: 500px; height: 500px; background: rgba(59,130,246,0.12); bottom: 5%; right: 10%; animation-delay: -6s; }
+        .orb-3 { width: 300px; height: 300px; background: rgba(168,85,247,0.1); top: 50%; left: 50%; transform: translate(-50%,-50%); animation: pulseOrb 8s infinite alternate; }
+        @keyframes floatOrb {
             0% { transform: translateY(0px) translateX(0px); }
             100% { transform: translateY(-60px) translateX(30px); }
         }
-        @keyframes pulse {
-            0% { opacity: 0.5; transform: scale(0.8) translate(-50%, -50%); }
-            100% { opacity: 1; transform: scale(1.2) translate(-50%, -50%); }
+        @keyframes pulseOrb {
+            0% { opacity: 0.5; transform: scale(0.8) translate(-50%,-50%); }
+            100% { opacity: 1; transform: scale(1.2) translate(-50%,-50%); }
         }
 
-        /* Thanh chạy tin tức FOMO */
-        .marquee-container {
-            width: 100%; overflow: hidden; background: linear-gradient(90deg, #020617, #0f172a, #020617);
-            border-bottom: 1px solid rgba(255,255,255,0.05); border-top: 1px solid rgba(255,255,255,0.05);
-            padding: 10px 0; display: flex; white-space: nowrap; position: relative;
+        /* ===== MARQUEE ===== */
+        .marquee-track {
+            width: 100%; overflow: hidden;
+            background: linear-gradient(90deg, #020617, #0f172a, #020617);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 10px 0; display: flex; white-space: nowrap;
         }
         .marquee-content {
-            display: inline-block;
-            animation: marquee 35s linear infinite;
-            color: #cbd5e1; font-size: 0.95rem; font-weight: 500;
+            display: inline-flex; align-items: center; gap: 0;
+            animation: scrollMarquee 40s linear infinite;
+            color: #cbd5e1; font-size: 0.9rem; font-weight: 500;
+            will-change: transform;
         }
-        .marquee-container:hover .marquee-content { animation-play-state: paused; }
-        .marquee-content span { margin-right: 60px; }
-        
-        @keyframes marquee {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-100%); }
+        .marquee-track:hover .marquee-content { animation-play-state: paused; }
+        .marquee-content span { margin-right: 56px; }
+        @keyframes scrollMarquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
 
-        /* Scroll Animations */
+        /* ===== REVEAL ANIMATIONS ===== */
         .reveal {
-            opacity: 0;
-            transform: translateY(40px);
+            opacity: 0; transform: translateY(40px);
             transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
         }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* Animation cho card thư viện */
+        /* ===== DOC CARD ANIMATION ===== */
         @keyframes fadeUpIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(24px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .doc-card-anim { animation: fadeUpIn 0.5s ease-out forwards; opacity: 0; }
+
+        /* ===== STATS COUNTER ===== */
+        .stat-card {
+            background: linear-gradient(135deg, rgba(30,41,59,0.5) 0%, rgba(15,23,42,0.7) 100%);
+            border: 1px solid rgba(255,255,255,0.06);
+            backdrop-filter: blur(16px);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px -8px rgba(16,185,129,0.2);
+            border-color: rgba(16,185,129,0.3);
+        }
+        @keyframes countUp {
+            from { opacity: 0; transform: scale(0.7); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .counter-anim { animation: countUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+        /* ===== TOAST ===== */
+        #toast-container {
+            position: fixed; bottom: 2rem; right: 2rem;
+            z-index: 10000; display: flex; flex-direction: column; gap: 0.75rem;
+            pointer-events: none;
+        }
+        .toast {
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            background: rgba(15,23,42,0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(16,185,129,0.4);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 20px rgba(16,185,129,0.15);
+            display: flex; align-items: center; gap: 0.75rem;
+            font-size: 0.875rem; font-weight: 600; color: #f1f5f9;
+            pointer-events: auto; min-width: 280px;
+            animation: toastIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        .toast.hiding {
+            opacity: 0; transform: translateX(100%);
+        }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* ===== BACK TO TOP ===== */
+        #back-to-top {
+            position: fixed; bottom: 2rem; left: 2rem; z-index: 9000;
+            width: 48px; height: 48px; border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #06b6d4);
+            border: none; cursor: pointer; color: #020617;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; font-weight: 900;
+            box-shadow: 0 4px 20px rgba(16,185,129,0.4);
+            opacity: 0; transform: scale(0) translateY(10px);
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+        }
+        #back-to-top.visible {
+            opacity: 1; transform: scale(1) translateY(0);
+            pointer-events: auto;
+        }
+        #back-to-top:hover {
+            transform: scale(1.12) translateY(-3px);
+            box-shadow: 0 8px 30px rgba(16,185,129,0.5);
+        }
+
+        /* ===== MOBILE MENU ===== */
+        #mobile-menu {
+            position: fixed; inset: 0; z-index: 40;
+            background: rgba(2,6,23,0.97);
+            backdrop-filter: blur(24px);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 2rem; opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        #mobile-menu.open { opacity: 1; pointer-events: auto; }
+        #mobile-menu a {
+            font-size: 1.5rem; font-weight: 800; color: #94a3b8;
+            text-decoration: none; letter-spacing: 0.05em; text-transform: uppercase;
+            transition: color 0.2s, letter-spacing 0.2s;
+        }
+        #mobile-menu a:hover { color: #10b981; letter-spacing: 0.12em; }
+        .hamburger { width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
+        .hamburger span {
+            display: block; height: 2px; background: #e2e8f0;
+            border-radius: 2px; transition: all 0.3s ease;
+            transform-origin: center;
+        }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 8px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -8px); }
+
+        /* ===== ROADMAP ===== */
+        .roadmap-line {
+            background: linear-gradient(to bottom, #10b981, #3b82f6, #a855f7, #f59e0b);
+        }
+        .roadmap-node {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .roadmap-node:hover { transform: scale(1.1); }
+
+        /* ===== SEARCH SHORTCUT ===== */
+        .kbd {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 2px 7px; border-radius: 6px;
+            background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+            font-size: 0.7rem; color: #94a3b8; font-weight: 600; letter-spacing: 0.05em;
+            font-family: 'Be Vietnam Pro', monospace;
+        }
+
+        /* ===== FILTER COUNT BADGE ===== */
+        .filter-count {
+            display: inline-flex; align-items: center; justify-content: center;
+            min-width: 20px; height: 20px; padding: 0 5px;
+            border-radius: 999px; font-size: 0.65rem; font-weight: 700;
+            background: rgba(255,255,255,0.12); color: #94a3b8;
+            margin-left: 6px; transition: all 0.3s;
+        }
+        .filter-btn.active .filter-count {
+            background: rgba(2,6,23,0.4); color: #020617;
+        }
+
+        /* ===== LEVEL TOOLTIP ===== */
+        .lv-tooltip {
+            position: absolute; bottom: calc(100% + 8px); left: 50%;
+            transform: translateX(-50%) scale(0.85);
+            background: rgba(2,6,23,0.95);
+            border: 1px solid rgba(16,185,129,0.3);
+            border-radius: 0.5rem; padding: 4px 10px;
+            font-size: 0.7rem; font-weight: 700; color: #10b981;
+            white-space: nowrap; pointer-events: none;
+            opacity: 0; transition: all 0.2s ease;
+            z-index: 20;
+        }
+        .lv-badge-wrap:hover .lv-tooltip { opacity: 1; transform: translateX(-50%) scale(1); }
+
+        /* ===== XP PROGRESS BAR ===== */
+        .xp-bar-fill { transition: width 1.2s cubic-bezier(0.25, 1, 0.5, 1); }
+
+        /* ===== TYPING CURSOR ===== */
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .cursor { animation: blink 1s step-end infinite; }
+
+        /* ===== GRADIENT TEXT SHINE ===== */
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        .shine-text {
+            background: linear-gradient(90deg, #10b981 0%, #06b6d4 25%, #ffffff 50%, #10b981 75%, #06b6d4 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 4s linear infinite;
+        }
+
+        /* ===== PAGE LOADER ===== */
+        #page-loader {
+            position: fixed; inset: 0; z-index: 99999;
+            background: #020617;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        #page-loader.hidden { opacity: 0; visibility: hidden; }
+        .loader-ring {
+            width: 60px; height: 60px; border-radius: 50%;
+            border: 3px solid rgba(16,185,129,0.15);
+            border-top-color: #10b981;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== SKELETON ===== */
+        @keyframes skeletonPulse {
+            0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; }
+        }
+        .skeleton {
+            background: rgba(30,41,59,0.6);
+            animation: skeletonPulse 1.5s ease-in-out infinite;
+            border-radius: 12px;
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-emerald-500 selection:text-white">
 
-    <div class="fixed inset-0 z-[-1] bg-grid pointer-events-none"></div>
+<!-- ===== PAGE LOADER ===== -->
+<div id="page-loader">
+    <div class="flex flex-col items-center gap-4">
+        <div class="loader-ring"></div>
+        <span class="text-emerald-400 font-bold text-sm tracking-widest uppercase">Trading Insight</span>
+    </div>
+</div>
 
-    <nav class="fixed top-0 w-full z-50 glass-panel border-b border-white/5 transition-all duration-300 py-3" id="navbar">
-        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-            <div class="flex items-center cursor-pointer group">
-                <span class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-100 to-gray-300 tracking-wider group-hover:from-emerald-400 group-hover:to-teal-300 transition-colors duration-500 drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] group-hover:drop-shadow-[0_0_20px_rgba(16,185,129,0.6)]">
-                    TRADING INSIGHT
-                </span>
-            </div>
-            <div>
-                <a href="https://t.me/tradinginsight_chat" target="_blank" class="px-6 py-2.5 text-sm font-bold text-white bg-white/5 hover:bg-emerald-500 rounded-full border border-white/10 hover:border-emerald-400 transition-all duration-300 shadow-lg hover:shadow-emerald-500/30 flex items-center gap-2 active:scale-95">
-                    <i class="fa-brands fa-telegram text-lg"></i> 
-                    <span class="hidden sm:inline">Tham Gia Group</span>
-                </a>
-            </div>
-        </div>
-    </nav>
+<!-- ===== SCROLL PROGRESS ===== -->
+<div id="scroll-progress"></div>
 
-    <div class="relative w-full min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-        
-        <div class="absolute inset-0 z-0">
-            <img src="https://i.postimg.cc/g2Rg5H3L/679544678-122125176321180762-4627680554922166114-n.jpg" alt="Trading Background" class="w-full h-full object-cover opacity-20 mix-blend-luminosity">
-            <div class="absolute inset-0 bg-gradient-to-b from-[#020617]/40 via-[#020617]/80 to-[#020617]"></div>
-        </div>
-        
-        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto reveal active">
-            <div class="inline-flex items-center gap-2 mb-8 px-6 py-2.5 rounded-full glass-panel text-emerald-400 text-xs md:text-sm font-bold tracking-widest uppercase border border-emerald-500/30 shadow-[0_0_20px_rgba(16,185,129,0.15)] backdrop-blur-md">
-                <span class="relative flex h-3 w-3">
-                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                </span>
-                Cộng Đồng Giao Dịch Thực Chiến
-            </div>
-            
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-200 to-gray-500 mb-6 drop-shadow-2xl leading-[1.1] tracking-tight">
-                TRI THỨC LÀ SỨC MẠNH<br>
-                <span class="bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-blue-500 relative inline-block mt-2">
-                    THĂNG CẤP ĐỂ DẪN ĐẦU
-                    <div class="absolute -inset-2 bg-emerald-500/20 blur-2xl -z-10 rounded-full"></div>
-                </span>
-            </h1>
-            
-            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed font-light">
-                Chỉ cần <span class="text-emerald-400 font-semibold">Tương tác</span> để tích lũy XP. Dùng Cấp độ của bạn để mở khóa kho tàng tài liệu tinh hoa từ Cơ bản đến hệ thống SMC/ICT chuyên sâu.
-            </p>
-            
-            <a href="#thu-vien" class="group inline-flex items-center justify-center gap-3 px-8 py-4 text-lg font-bold text-[#020617] bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full hover:from-emerald-300 hover:to-teal-300 transition-all duration-300 shadow-[0_0_30px_rgba(16,185,129,0.4)] hover:shadow-[0_0_50px_rgba(16,185,129,0.6)] transform hover:-translate-y-1 active:scale-95">
-                <i class="fa-solid fa-compass group-hover:rotate-45 transition-transform duration-300"></i> Khám Phá Thư Viện Ngay
-            </a>
-        </div>
-        
-        <a href="#tinh-nang" class="absolute bottom-10 left-1/2 -translate-x-1/2 text-gray-500 hover:text-emerald-400 animate-bounce transition-colors duration-300">
-            <i class="fa-solid fa-arrow-down text-2xl"></i>
+<!-- ===== MOBILE MENU ===== -->
+<div id="mobile-menu">
+    <a href="#" onclick="closeMobileMenu()">Trang Chủ</a>
+    <a href="#tinh-nang" onclick="closeMobileMenu()">Tư Duy</a>
+    <a href="#thu-vien" onclick="closeMobileMenu()">Thư Viện</a>
+    <a href="#lo-trinh" onclick="closeMobileMenu()">Lộ Trình</a>
+    <a href="https://t.me/tradinginsight_chat" target="_blank" onclick="closeMobileMenu()"
+       class="mt-4 px-10 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-[#020617] font-black text-base">
+        <i class="fa-brands fa-telegram mr-2"></i>Tham Gia Ngay
+    </a>
+</div>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="fixed top-3 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-6xl z-50 glass-panel rounded-2xl border border-white/8 transition-all duration-300 px-6 py-3.5" id="navbar">
+    <div class="flex justify-between items-center">
+
+        <!-- Logo: chữ thôi, không icon -->
+        <a href="#" class="group flex flex-col leading-none">
+            <span class="text-[11px] font-bold text-emerald-500 tracking-[0.3em] uppercase mb-0.5 opacity-80"></span>
+            <span class="text-xl font-black tracking-[0.12em] text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-100 to-gray-400 group-hover:from-emerald-400 group-hover:to-teal-300 transition-all duration-500">
+                TRADING INSIGHT
+            </span>
         </a>
-    </div>
 
-    <div class="marquee-container shadow-[0_5px_30px_rgba(0,0,0,0.5)] z-20 relative">
-        <div class="marquee-content">
-            <span class="text-gray-300"><i class="fa-solid fa-sparkles text-yellow-400 mr-1"></i> <span class="text-emerald-400 font-bold tracking-wide drop-shadow-md">Trading Insight</span> chào mừng mọi người đã đến!</span>
-            <span>🔥 <span class="text-emerald-400 font-bold">Hoàng Long</span> vừa đạt Level 15</span>
-            <span>🚀 <span class="text-emerald-400 font-bold">Minh Tuấn</span> đã mở khóa Ebook Quản Trị Vốn</span>
-            <span class="text-gray-300"><i class="fa-solid fa-sparkles text-yellow-400 mr-1"></i> <span class="text-emerald-400 font-bold tracking-wide drop-shadow-md">Trading Insight</span> chào mừng mọi người đã đến!</span>
-            <span>💎 <span class="text-emerald-400 font-bold">Kailennox</span> vươn lên mốc Level 50 Pro Trader</span>
-            <span>⚡️ <span class="text-emerald-400 font-bold">David_nguyen</span> nhận tài liệu SMC Đặc quyền</span>
-            <span>🔥 Chào các thành viên tích cực của Trading Insight</span>
-        </div>
-        <div class="marquee-content">
-            <span class="text-gray-300"><i class="fa-solid fa-sparkles text-yellow-400 mr-1"></i> <span class="text-emerald-400 font-bold tracking-wide drop-shadow-md">Trading Insight</span> chào mừng mọi người đã đến!</span>
-            <span>🔥 <span class="text-emerald-400 font-bold">VuLa</span> vừa đạt Level 15</span>
-            <span>🚀 <span class="text-emerald-400 font-bold">Minh Thắng</span> đã mở khóa Ebook Quản Trị Vốn</span>
-            <span class="text-gray-300"><i class="fa-solid fa-sparkles text-yellow-400 mr-1"></i> <span class="text-emerald-400 font-bold tracking-wide drop-shadow-md">Trading Insight</span> chào mừng mọi người đã đến!</span>
-            <span>💎 <span class="text-emerald-400 font-bold">Kiệt Phạm</span> vươn lên mốc Level 50 Pro Trader</span>
-            <span>⚡️ <span class="text-emerald-400 font-bold">LyHai03</span> nhận tài liệu SMC Đặc quyền</span>
-            <span>🔥 Chào các thành viên tích cực của Trading Insight</span>
-        </div>
-    </div>
-
-    <div id="tinh-nang" class="max-w-7xl mx-auto px-6 py-32 overflow-hidden">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div class="order-2 lg:order-1 reveal">
-                <div class="inline-block mb-4 px-4 py-1 rounded-full bg-white/5 border border-white/10 text-emerald-400 text-sm font-semibold">
-                    <i class="fa-solid fa-crosshairs mr-2"></i>Tư Duy Giao Dịch
-                </div>
-                <h2 class="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
-                    Tâm Lý Sắc Bén,<br>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-500">Kỷ Luật Thép.</span>
-                </h2>
-                <p class="text-gray-400 text-lg mb-10 leading-relaxed">
-                    Kỹ thuật chỉ chiếm 20% chiến thắng, 80% còn lại là khả năng quản trị chính mình. Đồng hành cùng bầy thú săn mồi của Trading Insight để rèn luyện tư duy đỉnh cao giữa tâm bão thị trường.
-                </p>
-                <div class="flex flex-col gap-6">
-                    <div class="flex items-center gap-5 glass-card p-6 rounded-2xl relative overflow-hidden group hover:border-emerald-500/50">
-                        <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div class="relative w-16 h-16 rounded-2xl bg-[#020617] border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-2xl shrink-0 shadow-[0_0_15px_rgba(16,185,129,0.2)] group-hover:scale-110 transition-transform duration-500"><i class="fa-solid fa-shield-halved"></i></div>
-                        <div class="relative">
-                            <h4 class="font-bold text-white text-xl mb-1 group-hover:text-emerald-400 transition-colors">Bảo Vệ Vốn Là Sinh Mệnh</h4>
-                            <p class="text-sm text-gray-400 leading-relaxed">Sống sót qua những đợt quét thanh khoản trước khi nghĩ đến lợi nhuận khủng.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-5 glass-card p-6 rounded-2xl relative overflow-hidden group hover:border-blue-500/50">
-                        <div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div class="relative w-16 h-16 rounded-2xl bg-[#020617] border border-blue-500/30 text-blue-400 flex items-center justify-center text-2xl shrink-0 shadow-[0_0_15px_rgba(59,130,246,0.2)] group-hover:scale-110 transition-transform duration-500"><i class="fa-solid fa-brain"></i></div>
-                        <div class="relative">
-                            <h4 class="font-bold text-white text-xl mb-1 group-hover:text-blue-400 transition-colors">Kiểm Soát FOMO</h4>
-                            <p class="text-sm text-gray-400 leading-relaxed">Giữ cái đầu lạnh, đánh bại nỗi sợ hãi và sự tham lam của đám đông ngoài kia.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="order-1 lg:order-2 img-zoom h-[600px] shadow-[0_0_50px_rgba(16,185,129,0.15)] border border-white/10 rounded-[2rem] p-3 glass-panel reveal relative group">
-                <div class="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2rem] pointer-events-none"></div>
-                <img src="https://i.postimg.cc/QtVckDDL/679051055-122125176183180762-1337404420589493600-n.jpg" alt="Trading Insight Mascot" class="w-full h-full object-cover rounded-3xl">
-            </div>
-        </div>
-    </div>
-
-    <div id="thu-vien" class="relative z-10 py-32 glass-panel border-t border-b border-white/5">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[1px] bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent"></div>
-        
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-20 reveal">
-                <h2 class="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">Kho Tàng <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-500">Bí Kíp</span></h2>
-                <p class="text-gray-400 max-w-2xl mx-auto text-lg md:text-xl font-light">Trao đổi điểm XP của bạn để mở khóa. Đẳng cấp càng cao, phần thưởng càng xứng đáng với năng lực.</p>
-            </div>
-
-            <div class="flex flex-col lg:flex-row justify-between items-center gap-8 mb-16 reveal">
-                <div class="relative w-full lg:w-96 group">
-                    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                        <i class="fa-solid fa-search text-gray-500 group-focus-within:text-emerald-400 transition-colors duration-300"></i>
-                    </div>
-                    <input type="text" id="searchInput" onkeyup="searchDocs()" placeholder="Tìm kiếm tài liệu, Ebook..." 
-                           class="w-full bg-[#0f172a]/80 backdrop-blur-md border border-white/10 text-white rounded-2xl py-4 pl-14 pr-5 focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all duration-300 shadow-inner text-sm placeholder-gray-500">
-                    <div class="absolute inset-0 -z-10 bg-emerald-500/5 rounded-2xl blur-md opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"></div>
-                </div>
-
-                <div class="flex flex-wrap justify-center gap-3 p-2 bg-[#0f172a]/60 backdrop-blur-md rounded-2xl border border-white/5 shadow-lg" id="filter-buttons">
-                    <button onclick="filterDocs('all', this)" class="filter-btn active px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-[#020617] font-bold transition-all duration-300 shadow-[0_0_15px_rgba(16,185,129,0.3)] transform hover:-translate-y-0.5">Tất Cả</button>
-                    <button onclick="filterDocs('coban', this)" class="filter-btn px-6 py-2.5 rounded-xl text-gray-400 font-semibold transition-all duration-300 hover:text-white hover:bg-white/10">Cơ Bản (Lv 1+)</button>
-                    <button onclick="filterDocs('nangcao', this)" class="filter-btn px-6 py-2.5 rounded-xl text-gray-400 font-semibold transition-all duration-300 hover:text-white hover:bg-white/10">SMC/ICT (Lv 15+)</button>
-                    <button onclick="filterDocs('pro', this)" class="filter-btn px-6 py-2.5 rounded-xl text-gray-400 font-semibold transition-all duration-300 hover:text-white hover:bg-white/10">Pro Tools (Lv 50+)</button>
-                </div>
-            </div>
-
-            <div id="docs-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 min-h-[400px]">
-                </div>
-        </div>
-    </div>
-
-    <footer class="relative py-20 bg-[#020617] border-t border-white/5 overflow-hidden">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-[1px] bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent"></div>
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-[15px] bg-emerald-500/10 blur-2xl"></div>
-
-        <div class="max-w-7xl mx-auto px-6 relative z-10 flex flex-col items-center reveal">
-            
-            <a href="#" class="inline-block mb-6 group">
-                <h2 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 tracking-[0.15em] group-hover:from-emerald-400 group-hover:to-teal-300 transition-colors duration-500">
-                    TRADING INSIGHT
-                </h2>
+        <!-- Desktop Nav Links — có dot indicator và divider -->
+        <div class="hidden md:flex items-center gap-0.5">
+            <a href="#tinh-nang" class="nav-link relative px-5 py-2.5 rounded-xl text-sm text-gray-400 font-semibold hover:text-white transition-all duration-200 group">
+                Tư Duy
+                <span class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-emerald-400 scale-0 group-hover:scale-100 transition-transform duration-200"></span>
             </a>
-            
-            <p class="text-gray-400 text-base max-w-md text-center mb-10 leading-relaxed">
-                Hệ sinh thái giao dịch thực chiến.<br> Nơi kiến thức, kỷ luật và tâm lý tạo nên những nhà giao dịch dẫn đầu.
-            </p>
+            <span class="w-px h-4 bg-white/10"></span>
+            <a href="#thu-vien" class="nav-link relative px-5 py-2.5 rounded-xl text-sm text-gray-400 font-semibold hover:text-white transition-all duration-200 group">
+                Thư Viện
+                <span class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-emerald-400 scale-0 group-hover:scale-100 transition-transform duration-200"></span>
+            </a>
+            <span class="w-px h-4 bg-white/10"></span>
+            <a href="#lo-trinh" class="nav-link relative px-5 py-2.5 rounded-xl text-sm text-gray-400 font-semibold hover:text-white transition-all duration-200 group">
+                Lộ Trình
+                <span class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-emerald-400 scale-0 group-hover:scale-100 transition-transform duration-200"></span>
+            </a>
+        </div>
 
-            <div class="flex gap-5 mb-12">
-                <a href="#" class="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-emerald-500 hover:border-emerald-400 transition-all duration-300 group hover:shadow-[0_0_20px_rgba(16,185,129,0.4)]">
-                    <i class="fa-brands fa-telegram text-2xl group-hover:scale-110 transition-transform"></i>
-                </a>
-                <a href="#" class="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-blue-500 hover:border-blue-400 transition-all duration-300 group hover:shadow-[0_0_20px_rgba(59,130,246,0.4)]">
-                    <i class="fa-brands fa-twitter text-2xl group-hover:scale-110 transition-transform"></i>
-                </a>
-                <a href="#" class="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-500 hover:border-red-400 transition-all duration-300 group hover:shadow-[0_0_20px_rgba(239,68,68,0.4)]">
-                    <i class="fa-brands fa-youtube text-2xl group-hover:scale-110 transition-transform"></i>
-                </a>
+        <div class="flex items-center gap-3">
+            <!-- Live badge + CTA -->
+            <div class="hidden lg:flex items-center gap-2 mr-2">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span class="text-xs text-emerald-400 font-bold">Live</span>
             </div>
+            <a href="https://t.me/tradinginsight_chat" target="_blank"
+               class="hidden sm:flex items-center gap-2 px-5 py-2.5 text-sm font-bold text-[#020617] bg-gradient-to-r from-emerald-400 to-teal-400 rounded-xl hover:from-emerald-300 hover:to-teal-300 transition-all duration-300 shadow-[0_0_16px_rgba(16,185,129,0.35)] hover:shadow-[0_0_28px_rgba(16,185,129,0.55)] active:scale-95">
+                <i class="fa-brands fa-telegram"></i>
+                <span>Tham Gia Group</span>
+            </a>
+            <!-- Hamburger -->
+            <div class="md:hidden hamburger" id="hamburger" onclick="toggleMobileMenu()">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
 
-            <div class="w-full pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-gray-500">
-                <p>© 2026 Trading Insight. Xây dựng cho những người dẫn đầu.</p>
-                <div class="flex gap-8 font-medium">
-                    <a href="#" class="hover:text-emerald-400 transition-colors">Điều khoản</a>
-                    <a href="#" class="hover:text-emerald-400 transition-colors">Bảo mật</a>
+    </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<div class="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-20">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="absolute inset-0 z-0">
+        <img src="https://i.postimg.cc/g2Rg5H3L/679544678-122125176321180762-4627680554922166114-n.jpg"
+             alt="Trading Background" class="w-full h-full object-cover opacity-20 mix-blend-luminosity" loading="lazy">
+        <div class="absolute inset-0 bg-gradient-to-b from-[#020617]/40 via-[#020617]/80 to-[#020617]"></div>
+    </div>
+
+    <div class="relative z-10 text-center px-4 max-w-5xl mx-auto reveal active">
+        <div class="inline-flex items-center gap-2 mb-8 px-6 py-2.5 rounded-full glass-panel text-emerald-400 text-xs md:text-sm font-bold tracking-widest uppercase border border-emerald-500/30 shadow-[0_0_20px_rgba(16,185,129,0.15)]">
+            <span class="relative flex h-2.5 w-2.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+            </span>
+            Cộng Đồng Giao Dịch Thực Chiến
+        </div>
+
+        <h1 class="text-1xl md:text-2xl lg:text-3xl xl:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-200 to-gray-500 mb-6 drop-shadow-2xl leading-[1.35] tracking-tight">
+            TRI THỨC LÀ SỨC MẠNH<br>
+            <span class="shine-text">THĂNG CẤP ĐỂ DẪN ĐẦU</span>
+        </h1>
+
+        <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed font-light">
+            Chỉ cần <span class="text-emerald-400 font-semibold">Tương tác</span> để tích lũy XP. Dùng Cấp độ của bạn để mở khóa kho tàng tài liệu tinh hoa từ Cơ bản đến hệ thống SMC/ICT chuyên sâu.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href="#thu-vien"
+               class="group inline-flex items-center justify-center gap-3 px-8 py-4 text-base font-bold text-[#020617] bg-gradient-to-r from-emerald-400 to-teal-400 rounded-2xl hover:from-emerald-300 hover:to-teal-300 transition-all duration-300 shadow-[0_0_30px_rgba(16,185,129,0.4)] hover:shadow-[0_0_50px_rgba(16,185,129,0.6)] transform hover:-translate-y-1 active:scale-95">
+                <i class="fa-solid fa-compass group-hover:rotate-45 transition-transform duration-300"></i>
+                Khám Phá Thư Viện
+            </a>
+            <a href="#lo-trinh"
+               class="group inline-flex items-center justify-center gap-3 px-8 py-4 text-base font-bold text-gray-300 glass-panel rounded-2xl border border-white/10 hover:border-emerald-500/40 hover:text-white transition-all duration-300 transform hover:-translate-y-1 active:scale-95">
+                <i class="fa-solid fa-map text-emerald-400"></i>
+                Xem Lộ Trình
+            </a>
+        </div>
+    </div>
+
+    <a href="#stats" class="absolute bottom-10 left-1/2 -translate-x-1/2 text-gray-500 hover:text-emerald-400 animate-bounce transition-colors duration-300">
+        <i class="fa-solid fa-arrow-down text-xl"></i>
+    </a>
+</div>
+
+<!-- ===== MARQUEE ===== -->
+<div class="marquee-track shadow-[0_5px_30px_rgba(0,0,0,0.5)] z-20 relative">
+    <div class="marquee-content" aria-hidden="true">
+        <span class="text-gray-300"><i class="fa-solid fa-sparkles text-yellow-400 mr-1"></i> <span class="text-emerald-400 font-bold">Trading Insight</span> chào mừng mọi người!</span>
+        <span>🔥 <span class="text-emerald-400 font-bold">Hoàng Long</span> vừa đạt Level 15</span>
+        <span>🚀 <span class="text-emerald-400 font-bold">Minh Tuấn</span> mở khóa Ebook Quản Trị Vốn</span>
+        <span>💎 <span class="text-emerald-400 font-bold">Kailennox</span> vươn lên Level 50 Pro Trader</span>
+        <span>⚡️ <span class="text-emerald-400 font-bold">David_nguyen</span> nhận tài liệu SMC Đặc quyền</span>
+        <span>🏆 <span class="text-emerald-400 font-bold">VuLa</span> vừa đạt Level 20 Nâng Cao</span>
+        <span>🚀 <span class="text-emerald-400 font-bold">Minh Thắng</span> hoàn thành bộ YTC Price Action</span>
+        <span>💎 <span class="text-emerald-400 font-bold">Kiệt Phạm</span> vươn lên mốc Level 50</span>
+        <span>⚡️ <span class="text-emerald-400 font-bold">LyHai03</span> nhận tài liệu SMC Đặc quyền</span>
+        <span>🔥 Chào các thành viên tích cực của Trading Insight</span>
+        <!-- Duplicate for seamless loop -->
+        <span class="text-gray-300"><i class="fa-solid fa-sparkles text-yellow-400 mr-1"></i> <span class="text-emerald-400 font-bold">Trading Insight</span> chào mừng mọi người!</span>
+        <span>🔥 <span class="text-emerald-400 font-bold">Hoàng Long</span> vừa đạt Level 15</span>
+        <span>🚀 <span class="text-emerald-400 font-bold">Minh Tuấn</span> mở khóa Ebook Quản Trị Vốn</span>
+        <span>💎 <span class="text-emerald-400 font-bold">Kailennox</span> vươn lên Level 50 Pro Trader</span>
+        <span>⚡️ <span class="text-emerald-400 font-bold">David_nguyen</span> nhận tài liệu SMC Đặc quyền</span>
+        <span>🏆 <span class="text-emerald-400 font-bold">VuLa</span> vừa đạt Level 20 Nâng Cao</span>
+        <span>🚀 <span class="text-emerald-400 font-bold">Minh Thắng</span> hoàn thành bộ YTC Price Action</span>
+        <span>💎 <span class="text-emerald-400 font-bold">Kiệt Phạm</span> vươn lên mốc Level 50</span>
+        <span>⚡️ <span class="text-emerald-400 font-bold">LyHai03</span> nhận tài liệu SMC Đặc quyền</span>
+        <span>🔥 Chào các thành viên tích cực của Trading Insight</span>
+    </div>
+</div>
+
+<!-- ===== STATS SECTION ===== -->
+<div id="stats" class="max-w-7xl mx-auto px-6 py-24">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-5 reveal">
+        <div class="stat-card rounded-2xl p-6 text-center">
+            <div class="text-3xl md:text-4xl font-black text-emerald-400 mb-1" data-counter="1000" data-suffix="+">0</div>
+            <div class="text-xs text-gray-500 font-semibold uppercase tracking-widest">Thành Viên</div>
+        </div>
+        <div class="stat-card rounded-2xl p-6 text-center">
+            <div class="text-3xl md:text-4xl font-black text-blue-400 mb-1" data-counter="18" data-suffix="">0</div>
+            <div class="text-xs text-gray-500 font-semibold uppercase tracking-widest">Tài Liệu Độc Quyền</div>
+        </div>
+        <div class="stat-card rounded-2xl p-6 text-center">
+            <div class="text-3xl md:text-4xl font-black text-purple-400 mb-1" data-counter="100+" data-suffix=" Lv">0</div>
+            <div class="text-xs text-gray-500 font-semibold uppercase tracking-widest">Cấp Độ Tối Đa</div>
+        </div>
+        <div class="stat-card rounded-2xl p-6 text-center">
+            <div class="text-3xl md:text-4xl font-black text-amber-400 mb-1" data-counter="100" data-suffix="%">0</div>
+            <div class="text-xs text-gray-500 font-semibold uppercase tracking-widest">Hài Lòng</div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== FEATURES SECTION ===== -->
+<div id="tinh-nang" class="max-w-7xl mx-auto px-6 py-16 overflow-hidden">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div class="order-2 lg:order-1 reveal">
+            <div class="inline-block mb-4 px-4 py-1 rounded-full bg-white/5 border border-white/10 text-emerald-400 text-sm font-semibold">
+                <i class="fa-solid fa-crosshairs mr-2"></i>Tư Duy Giao Dịch
+            </div>
+            <h2 class="text-2xl md:text-3xl lg:text-4xl font-black text-white mb-6 leading-tight">
+                Tâm Lý Sắc Bén<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-500">Kỷ Luật Thép</span>
+            </h2>
+            <p class="text-gray-400 text-lg mb-10 leading-relaxed">
+                Kỹ thuật chỉ chiếm 20% chiến thắng, 80% còn lại là khả năng quản trị chính mình. Đồng hành cùng cộng đồng Trading Insight để rèn luyện tư duy đỉnh cao giữa tâm bão thị trường.
+            </p>
+            <div class="flex flex-col gap-5">
+                <div class="flex items-center gap-5 glass-card p-6 rounded-2xl relative overflow-hidden group hover:border-emerald-500/50">
+                    <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="relative w-14 h-14 rounded-2xl bg-[#020617] border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-2xl shrink-0 shadow-[0_0_15px_rgba(16,185,129,0.2)] group-hover:scale-110 transition-transform duration-500">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div class="relative">
+                        <h4 class="font-bold text-white text-lg mb-1 group-hover:text-emerald-400 transition-colors">Bảo Vệ Vốn Là Sinh Mệnh</h4>
+                        <p class="text-sm text-gray-400 leading-relaxed">Sống sót qua những đợt quét thanh khoản trước khi nghĩ đến lợi nhuận.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-5 glass-card p-6 rounded-2xl relative overflow-hidden group hover:border-blue-500/50">
+                    <div class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="relative w-14 h-14 rounded-2xl bg-[#020617] border border-blue-500/30 text-blue-400 flex items-center justify-center text-2xl shrink-0 shadow-[0_0_15px_rgba(59,130,246,0.2)] group-hover:scale-110 transition-transform duration-500">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <div class="relative">
+                        <h4 class="font-bold text-white text-lg mb-1 group-hover:text-blue-400 transition-colors">Kiểm Soát FOMO</h4>
+                        <p class="text-sm text-gray-400 leading-relaxed">Giữ cái đầu lạnh, đánh bại nỗi sợ hãi và sự tham lam của đám đông.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-5 glass-card p-6 rounded-2xl relative overflow-hidden group hover:border-purple-500/50">
+                    <div class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="relative w-14 h-14 rounded-2xl bg-[#020617] border border-purple-500/30 text-purple-400 flex items-center justify-center text-2xl shrink-0 shadow-[0_0_15px_rgba(168,85,247,0.2)] group-hover:scale-110 transition-transform duration-500">
+                        <i class="fa-solid fa-chart-gantt"></i>
+                    </div>
+                    <div class="relative">
+                        <h4 class="font-bold text-white text-lg mb-1 group-hover:text-purple-400 transition-colors">Hệ Thống Hóa Giao Dịch</h4>
+                        <p class="text-sm text-gray-400 leading-relaxed">Từ tự phát đến có hệ thống - chìa khóa để trading bền vững dài hạn.</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </footer>
+        <div class="order-1 lg:order-2 img-zoom h-[600px] shadow-[0_0_50px_rgba(16,185,129,0.15)] border border-white/10 rounded-[2rem] p-3 glass-panel reveal relative group">
+            <div class="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2rem] pointer-events-none"></div>
+            <img src="https://i.postimg.cc/QtVckDDL/679051055-122125176183180762-1337404420589493600-n.jpg"
+                 alt="Trading Insight Mascot" class="w-full h-full object-cover rounded-3xl" loading="lazy">
+        </div>
+    </div>
+</div>
 
-    <script>
-        // ⚠️ CẬP NHẬT TÊN BOT TẠI ĐÂY
-        const BOT_USERNAME = "TenBotCuaBan_bot"; 
+<!-- ===== ROADMAP SECTION ===== -->
+<div id="lo-trinh" class="max-w-5xl mx-auto px-6 py-24">
+    <div class="text-center mb-16 reveal">
+        <div class="inline-block mb-4 px-4 py-1 rounded-full bg-white/5 border border-white/10 text-amber-400 text-sm font-semibold">
+            <i class="fa-solid fa-map-signs mr-2"></i>Lộ Trình Học Tập
+        </div>
+        <h2 class="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">
+            Hành Trình <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">Thăng Cấp</span>
+        </h2>
+        <p class="text-gray-400 max-w-xl mx-auto">Từ người mới hoàn toàn đến Pro Trader — mỗi cấp độ mở ra một kho tri thức mới.</p>
+    </div>
 
-        // 🟢 ĐÃ CẬP NHẬT TOÀN BỘ TÀI LIỆU CỦA BRO VÀO ĐÂY THEO THỨ TỰ TỪ CƠ BẢN ĐẾN PRO
-        const documents = [
-            // --- CƠ BẢN (Level 1 - 14) ---
-            { id: "cex_dex", title: "Sàn CEX, DEX là gì", desc: "Kiến thức vỡ lòng về các sàn giao dịch trong thị trường Crypto.", level: 1, cat: "coban", icon: "fa-building-columns" },
-            { id: "trade_coban", title: "Kiến Thức Trade Cơ Bản, Nâng Cao", desc: "Nền tảng vững chắc cho người mới bắt đầu bước chân vào thị trường.", level: 2, cat: "coban", icon: "fa-book-open" },
-            { id: "lythuyet_dow", title: "Lý thuyết Dow tóm tắt chi tiết", desc: "Nền móng của phân tích kỹ thuật hiện đại.", level: 3, cat: "coban", icon: "fa-chart-line" },
-            { id: "xuhuong", title: "Xu hướng thị trường, điều kiện xu hướng", desc: "Nhận biết điều kiện và xu hướng cấu trúc thị trường.", level: 4, cat: "coban", icon: "fa-arrow-trend-up" },
-            { id: "14_chibao", title: "14 Chỉ báo giá", desc: "Tổng hợp cách sử dụng các indicator phổ biến nhất.", level: 5, cat: "coban", icon: "fa-chart-pie" },
-            { id: "rsi", title: "RSI thần công (Eng, Tiếng Việt)", desc: "Tài liệu chuyên sâu về chỉ số sức mạnh tương đối (RSI).", level: 6, cat: "coban", icon: "fa-wave-square" },
-            { id: "kynang", title: "Kỹ Năng Quan Trọng Của Trader", desc: "Những thói quen và kỹ năng sống còn trong giao dịch.", level: 7, cat: "coban", icon: "fa-user-ninja" },
-            { id: "rr", title: "Cách tăng tỷ lệ Risk Reward", desc: "Tối ưu hóa lợi nhuận và quản trị rủi ro hiệu quả.", level: 8, cat: "coban", icon: "fa-scale-balanced" },
+    <div class="relative reveal">
+        <!-- Vertical Line -->
+        <div class="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 roadmap-line opacity-30 hidden md:block"></div>
 
-            // --- NÂNG CAO (Level 15 - 49) ---
-            { id: "ptkt_1_20", title: "Bộ Phân Tích Kỹ Thuật 1-20", desc: "Chuỗi tài liệu phân tích kỹ thuật toàn diện.", level: 15, cat: "nangcao", icon: "fa-microscope" },
-            { id: "mohinh_123", title: "Mô Hình Giá 123 ba đạo", desc: "Tuyệt chiêu giao dịch với mô hình giá kinh điển.", level: 18, cat: "nangcao", icon: "fa-draw-polygon" },
-            { id: "nhapmon_sd", title: "Nhập môn giao dịch với Supply-Demand", desc: "Làm quen với phương pháp giao dịch Cung - Cầu.", level: 20, cat: "nangcao", icon: "fa-boxes-stacked" },
-            { id: "cungcau", title: "Cung Cầu Chuyên Sâu", desc: "Đi sâu vào bản chất dòng tiền qua các vùng Supply/Demand.", level: 25, cat: "nangcao", icon: "fa-layer-group" },
-            { id: "ytc", title: "Price Action YTC 1-6", desc: "Bộ tài liệu hành vi giá thực chiến đỉnh cao.", level: 30, cat: "nangcao", icon: "fa-eye" },
-            { id: "dongtien", title: "Dòng tiền chạy qua các layer", desc: "Phân tích vĩ mô và sự luân chuyển vốn trong thị trường.", level: 35, cat: "nangcao", icon: "fa-money-bill-transfer" },
-
-            // --- PRO (Level 50+) ---
-            { id: "setup_clc", title: "Setup Chất Lượng Cao", desc: "Bộ sưu tập các điểm vào lệnh có xác suất thắng lớn.", level: 50, cat: "pro", icon: "fa-crosshairs" },
-            { id: "hethong_mmm", title: "Hệ thống MMM", desc: "Gói tài liệu phương pháp giao dịch hệ thống độc quyền.", level: 60, cat: "pro", icon: "fa-gears" },
-            { id: "smc", title: "Hệ thống Smart Money Concept (SMC)", desc: "Smart Money Concept - Giao dịch theo dấu chân cá mập.", level: 70, cat: "pro", icon: "fa-user-tie" },
-            { id: "trading_to_win", title: "Trangding To Win", desc: "Làm chủ tâm lý và tư duy của một nhà giao dịch chiến thắng.", level: 80, cat: "pro", icon: "fa-trophy" }
-        ];
-
-        let currentFilter = 'all';
-
-        function renderDocs(searchTerm = '') {
-            const container = document.getElementById('docs-container');
-            container.innerHTML = ''; 
-
-            let filtered = documents.filter(doc => {
-                const matchSearch = doc.title.toLowerCase().includes(searchTerm.toLowerCase()) || doc.desc.toLowerCase().includes(searchTerm.toLowerCase());
-                const matchCat = currentFilter === 'all' || doc.cat === currentFilter;
-                return matchSearch && matchCat;
-            });
-
-            if(filtered.length === 0) {
-                container.innerHTML = `
-                    <div class="col-span-full text-center py-20 px-6 glass-card rounded-3xl text-gray-400 doc-card-anim border-dashed border-2 border-gray-700/50">
-                        <div class="w-20 h-20 mx-auto bg-gray-800/50 rounded-full flex items-center justify-center mb-6">
-                            <i class="fa-solid fa-folder-open text-4xl text-gray-600"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2">Không tìm thấy tài liệu</h3>
-                        <p>Thử tìm kiếm với từ khóa khác hoặc thay đổi bộ lọc.</p>
-                    </div>`;
-                return;
-            }
-
-            filtered.forEach((doc, index) => {
-                let colorConfig = { text: "text-blue-400", bg: "bg-blue-400/10", border: "border-blue-400/30", shadow: "group-hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]", iconShadow: "shadow-[0_0_15px_rgba(59,130,246,0.3)]", tagBg: "bg-blue-500/20" };
-                if(doc.cat === 'nangcao') colorConfig = { text: "text-purple-400", bg: "bg-purple-400/10", border: "border-purple-400/30", shadow: "group-hover:shadow-[0_0_30px_rgba(168,85,247,0.15)]", iconShadow: "shadow-[0_0_15px_rgba(168,85,247,0.3)]", tagBg: "bg-purple-500/20" };
-                if(doc.cat === 'pro') colorConfig = { text: "text-amber-400", bg: "bg-amber-400/10", border: "border-amber-400/30", shadow: "group-hover:shadow-[0_0_30px_rgba(251,191,36,0.15)]", iconShadow: "shadow-[0_0_15px_rgba(251,191,36,0.3)]", tagBg: "bg-amber-500/20" };
-
-                const animDelay = `${index * 0.1}s`;
-
-                container.innerHTML += `
-                    <div class="glass-card rounded-[2rem] p-8 flex flex-col h-full relative group ${colorConfig.shadow} doc-card-anim border hover:border-emerald-500/40" style="animation-delay: ${animDelay}">
-                        <div class="absolute top-0 right-0 ${colorConfig.tagBg} backdrop-blur-md px-5 py-2.5 rounded-bl-3xl rounded-tr-[2rem] border-l border-b border-white/10 text-sm font-mono ${colorConfig.text} font-bold z-10">
-                            <i class="fa-solid fa-lock text-xs mr-1 opacity-70"></i> Lv ${doc.level}
-                        </div>
-                        
-                        <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-8 ${colorConfig.bg} ${colorConfig.text} border ${colorConfig.border} ${colorConfig.iconShadow} group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-500">
-                            <i class="fa-solid ${doc.icon}"></i>
-                        </div>
-                        
-                        <h3 class="text-2xl font-black mb-3 text-white group-hover:text-emerald-400 transition-colors duration-300 leading-tight">${doc.title}</h3>
-                        <p class="text-gray-400 text-base mb-10 flex-grow leading-relaxed">${doc.desc}</p>
-                        
-                        <a href="https://t.me/${BOT_USERNAME}?start=${doc.id}" target="_blank" 
-                           class="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-[#020617] text-white font-bold transition-all duration-300 relative overflow-hidden group/btn border border-white/10 hover:border-transparent hover:shadow-[0_0_20px_rgba(16,185,129,0.3)] active:scale-[0.98]">
-                           <span class="relative z-10 flex items-center gap-2 group-hover/btn:tracking-wide transition-all duration-300"><i class="fa-brands fa-telegram text-xl group-hover/btn:scale-110 transition-transform"></i> Mở Khóa Bằng Bot</span>
-                           <div class="absolute inset-0 h-full w-0 bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-300 ease-out group-hover/btn:w-full z-0"></div>
-                        </a>
+        <div class="flex flex-col gap-8">
+            <!-- Roadmap items -->
+            <div class="roadmap-item flex md:flex-row flex-col items-center gap-6 md:gap-0">
+                <div class="md:w-1/2 md:pr-12 md:text-right order-2 md:order-1">
+                    <div class="glass-card p-6 rounded-2xl border-blue-500/20 hover:border-blue-500/50 inline-block w-full">
+                        <span class="text-xs font-black text-blue-400 uppercase tracking-widest mb-1 block">Lv 1 – 14</span>
+                        <h3 class="text-xl font-black text-white mb-2">Cơ Bản</h3>
+                        <p class="text-sm text-gray-400">CEX/DEX, Lý thuyết Dow, 14 chỉ báo, RSI, quản trị R:R.</p>
                     </div>
-                `;
+                </div>
+                <div class="roadmap-node z-10 w-12 h-12 rounded-full bg-blue-500 border-4 border-[#020617] flex items-center justify-center text-white font-black text-sm shadow-[0_0_20px_rgba(59,130,246,0.5)] md:mx-0 order-1 md:order-2 shrink-0">1</div>
+                <div class="md:w-1/2 md:pl-12 order-3 hidden md:block"></div>
+            </div>
+
+            <div class="roadmap-item flex md:flex-row flex-col items-center gap-6 md:gap-0">
+                <div class="md:w-1/2 md:pr-12 order-2 md:order-1 hidden md:block"></div>
+                <div class="roadmap-node z-10 w-12 h-12 rounded-full bg-purple-500 border-4 border-[#020617] flex items-center justify-center text-white font-black text-sm shadow-[0_0_20px_rgba(168,85,247,0.5)] shrink-0 order-1">2</div>
+                <div class="md:w-1/2 md:pl-12 order-2 md:order-3 w-full">
+                    <div class="glass-card p-6 rounded-2xl border-purple-500/20 hover:border-purple-500/50 inline-block w-full">
+                        <span class="text-xs font-black text-purple-400 uppercase tracking-widest mb-1 block">Lv 15 – 49</span>
+                        <h3 class="text-xl font-black text-white mb-2">Nâng Cao / SMC</h3>
+                        <p class="text-sm text-gray-400">Phân tích kỹ thuật 1-20, Supply-Demand, YTC Price Action, Dòng tiền.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="roadmap-item flex md:flex-row flex-col items-center gap-6 md:gap-0">
+                <div class="md:w-1/2 md:pr-12 md:text-right order-2 md:order-1 w-full">
+                    <div class="glass-card p-6 rounded-2xl border-amber-500/20 hover:border-amber-500/50 inline-block w-full">
+                        <span class="text-xs font-black text-amber-400 uppercase tracking-widest mb-1 block">Lv 50+</span>
+                        <h3 class="text-xl font-black text-white mb-2">Pro Trader</h3>
+                        <p class="text-sm text-gray-400">Setup CLC, Hệ thống MMM, Smart Money Concept, Trading To Win.</p>
+                    </div>
+                </div>
+                <div class="roadmap-node z-10 w-12 h-12 rounded-full bg-amber-500 border-4 border-[#020617] flex items-center justify-center text-white font-black text-sm shadow-[0_0_20px_rgba(245,158,11,0.5)] shrink-0 order-1 md:order-2">3</div>
+                <div class="md:w-1/2 md:pl-12 order-3 hidden md:block"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== LIBRARY SECTION ===== -->
+<div id="thu-vien" class="relative z-10 py-24 glass-panel border-t border-b border-white/5">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[1px] bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent"></div>
+
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16 reveal">
+            <h2 class="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">
+                Kho Tàng <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-500">Bí Kíp</span>
+            </h2>
+            <p class="text-gray-400 max-w-2xl mx-auto text-lg font-light">
+                Trao đổi điểm XP để mở khóa. Đẳng cấp càng cao, phần thưởng càng xứng đáng.
+            </p>
+        </div>
+
+        <!-- Search + Filter Controls -->
+        <div class="flex flex-col lg:flex-row justify-between items-center gap-6 mb-12 reveal">
+            <!-- Search -->
+            <div class="relative w-full lg:w-96 group">
+                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                    <i class="fa-solid fa-magnifying-glass text-gray-500 group-focus-within:text-emerald-400 transition-colors duration-300 text-sm"></i>
+                </div>
+                <input type="text" id="searchInput" onkeyup="searchDocs()"
+                       placeholder="Tìm kiếm tài liệu... (nhấn / để tìm)"
+                       class="w-full bg-[#0f172a]/80 backdrop-blur-md border border-white/10 text-white rounded-2xl py-3.5 pl-12 pr-16 focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20 transition-all duration-300 text-sm placeholder-gray-500">
+                <div class="absolute inset-y-0 right-4 flex items-center">
+                    <span class="kbd">/</span>
+                </div>
+            </div>
+
+            <!-- Filter buttons -->
+            <div class="flex flex-wrap justify-center gap-2 p-2 bg-[#0f172a]/60 backdrop-blur-md rounded-2xl border border-white/5" id="filter-buttons">
+                <button onclick="filterDocs('all', this)" class="filter-btn active px-5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-[#020617] font-bold transition-all duration-300 text-sm shadow-[0_0_12px_rgba(16,185,129,0.25)]">
+                    Tất Cả <span class="filter-count" id="count-all">0</span>
+                </button>
+                <button onclick="filterDocs('coban', this)" class="filter-btn px-5 py-2 rounded-xl text-gray-400 font-semibold transition-all duration-300 hover:text-white hover:bg-white/10 text-sm">
+                    Cơ Bản <span class="filter-count" id="count-coban">0</span>
+                </button>
+                <button onclick="filterDocs('nangcao', this)" class="filter-btn px-5 py-2 rounded-xl text-gray-400 font-semibold transition-all duration-300 hover:text-white hover:bg-white/10 text-sm">
+                    SMC/ICT <span class="filter-count" id="count-nangcao">0</span>
+                </button>
+                <button onclick="filterDocs('pro', this)" class="filter-btn px-5 py-2 rounded-xl text-gray-400 font-semibold transition-all duration-300 hover:text-white hover:bg-white/10 text-sm">
+                    Pro Tools <span class="filter-count" id="count-pro">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Results count -->
+        <div class="mb-6 reveal" id="results-label">
+            <span class="text-sm text-gray-500"></span>
+        </div>
+
+        <!-- Doc Grid -->
+        <div id="docs-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7 min-h-[400px]"></div>
+    </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="relative py-20 bg-[#020617] border-t border-white/5 overflow-hidden">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-[1px] bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent"></div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-[15px] bg-emerald-500/10 blur-2xl"></div>
+
+    <div class="max-w-7xl mx-auto px-6 relative z-10 flex flex-col items-center reveal">
+        <div class="mb-6 text-center">
+            <span class="text-xs font-bold text-emerald-500 tracking-[0.3em] uppercase block mb-1 opacity-70">Hệ Sinh Thái Giao Dịch</span>
+            <h2 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 tracking-[0.12em]">
+                TRADING INSIGHT
+            </h2>
+        </div>
+
+        <p class="text-gray-400 text-base max-w-md text-center mb-10 leading-relaxed">
+            Hệ sinh thái giao dịch thực chiến.<br>Nơi kiến thức, kỷ luật và tâm lý tạo nên những nhà giao dịch dẫn đầu.
+        </p>
+
+        <div class="flex gap-4 mb-12">
+            <a href="https://t.me/tradinginsight_chat" target="_blank"
+               class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-emerald-500 hover:border-emerald-400 transition-all duration-300 hover:shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+                <i class="fa-brands fa-telegram text-xl"></i>
+            </a>
+            <a href="#" class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-sky-500 hover:border-sky-400 transition-all duration-300 hover:shadow-[0_0_20px_rgba(14,165,233,0.4)]">
+                <i class="fa-brands fa-twitter text-xl"></i>
+            </a>
+            <a href="#" class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-500 hover:border-red-400 transition-all duration-300 hover:shadow-[0_0_20px_rgba(239,68,68,0.4)]">
+                <i class="fa-brands fa-youtube text-xl"></i>
+            </a>
+        </div>
+
+        <div class="w-full pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-5 text-sm text-gray-500">
+            <p>© 2026 Trading Insight. Xây dựng cho những người dẫn đầu.</p>
+            <div class="flex gap-6 font-medium">
+                <a href="#" class="hover:text-emerald-400 transition-colors">Điều khoản</a>
+                <a href="#" class="hover:text-emerald-400 transition-colors">Bảo mật</a>
+                <a href="#thu-vien" class="hover:text-emerald-400 transition-colors">Thư viện</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- ===== BACK TO TOP BUTTON ===== -->
+<button id="back-to-top" onclick="scrollToTop()" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up"></i>
+</button>
+
+<!-- ===== TOAST CONTAINER ===== -->
+<div id="toast-container"></div>
+
+<!-- ===== FLOATING CTA (Mobile) ===== -->
+<div class="fixed bottom-20 right-5 z-50 sm:hidden">
+    <a href="https://t.me/tradinginsight_chat" target="_blank"
+       class="flex items-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 text-[#020617] font-black text-sm shadow-[0_4px_24px_rgba(16,185,129,0.5)] active:scale-95 transition-transform">
+        <i class="fa-brands fa-telegram text-base"></i>
+        Tham Gia
+    </a>
+</div>
+
+<!-- ===== BG GRID ===== -->
+<div class="fixed inset-0 z-[-1] bg-grid pointer-events-none"></div>
+
+<script>
+    // ===========================
+    // CONFIG
+    // ===========================
+    const BOT_USERNAME = "TenBotCuaBan_bot";
+
+    const documents = [
+        // Cơ bản
+        { id: "cex_dex",      title: "Sàn CEX, DEX là gì",                  desc: "Kiến thức vỡ lòng về các sàn giao dịch trong thị trường Crypto.",     level: 1,  cat: "coban",   icon: "fa-building-columns" },
+        { id: "trade_coban",  title: "Kiến Thức Trade Cơ Bản, Nâng Cao",    desc: "Nền tảng vững chắc cho người mới bắt đầu bước chân vào thị trường.",   level: 2,  cat: "coban",   icon: "fa-book-open" },
+        { id: "lythuyet_dow", title: "Lý thuyết Dow tóm tắt chi tiết",       desc: "Nền móng của phân tích kỹ thuật hiện đại.",                             level: 3,  cat: "coban",   icon: "fa-chart-line" },
+        { id: "xuhuong",      title: "Xu hướng thị trường",                   desc: "Nhận biết điều kiện và xu hướng cấu trúc thị trường.",                 level: 4,  cat: "coban",   icon: "fa-arrow-trend-up" },
+        { id: "14_chibao",    title: "14 Chỉ báo giá",                        desc: "Tổng hợp cách sử dụng các indicator phổ biến nhất.",                   level: 5,  cat: "coban",   icon: "fa-chart-pie" },
+        { id: "rsi",          title: "RSI thần công (Eng, Tiếng Việt)",       desc: "Tài liệu chuyên sâu về chỉ số sức mạnh tương đối (RSI).",              level: 6,  cat: "coban",   icon: "fa-wave-square" },
+        { id: "kynang",       title: "Kỹ Năng Quan Trọng Của Trader",         desc: "Những thói quen và kỹ năng sống còn trong giao dịch.",                 level: 7,  cat: "coban",   icon: "fa-user-ninja" },
+        { id: "rr",           title: "Cách tăng tỷ lệ Risk Reward",           desc: "Tối ưu hóa lợi nhuận và quản trị rủi ro hiệu quả.",                   level: 8,  cat: "coban",   icon: "fa-scale-balanced" },
+        // Nâng cao
+        { id: "ptkt_1_20",    title: "Bộ Phân Tích Kỹ Thuật 1-20",           desc: "Chuỗi tài liệu phân tích kỹ thuật toàn diện.",                         level: 15, cat: "nangcao", icon: "fa-microscope" },
+        { id: "mohinh_123",   title: "Mô Hình Giá 123 ba đạo",               desc: "Tuyệt chiêu giao dịch với mô hình giá kinh điển.",                     level: 18, cat: "nangcao", icon: "fa-draw-polygon" },
+        { id: "nhapmon_sd",   title: "Nhập môn Supply-Demand",                desc: "Làm quen với phương pháp giao dịch Cung - Cầu.",                       level: 20, cat: "nangcao", icon: "fa-boxes-stacked" },
+        { id: "cungcau",      title: "Cung Cầu Chuyên Sâu",                   desc: "Đi sâu vào bản chất dòng tiền qua các vùng Supply/Demand.",           level: 25, cat: "nangcao", icon: "fa-layer-group" },
+        { id: "ytc",          title: "Price Action YTC 1-6",                  desc: "Bộ tài liệu hành vi giá thực chiến đỉnh cao.",                         level: 30, cat: "nangcao", icon: "fa-eye" },
+        { id: "dongtien",     title: "Dòng tiền chạy qua các layer",          desc: "Phân tích vĩ mô và sự luân chuyển vốn trong thị trường.",              level: 35, cat: "nangcao", icon: "fa-money-bill-transfer" },
+        // Pro
+        { id: "setup_clc",    title: "Setup Chất Lượng Cao",                  desc: "Bộ sưu tập các điểm vào lệnh có xác suất thắng lớn.",                 level: 50, cat: "pro",     icon: "fa-crosshairs" },
+        { id: "hethong_mmm",  title: "Hệ thống MMM",                          desc: "Gói tài liệu phương pháp giao dịch hệ thống độc quyền.",               level: 60, cat: "pro",     icon: "fa-gears" },
+        { id: "smc",          title: "Smart Money Concept (SMC)",              desc: "Giao dịch theo dấu chân cá mập — Smart Money.",                       level: 70, cat: "pro",     icon: "fa-user-tie" },
+        { id: "trading_to_win","title": "Trading To Win",                      desc: "Làm chủ tâm lý và tư duy của một nhà giao dịch chiến thắng.",         level: 80, cat: "pro",     icon: "fa-trophy" }
+    ];
+
+    let currentFilter = 'all';
+
+    // ===========================
+    // PAGE LOADER
+    // ===========================
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            document.getElementById('page-loader').classList.add('hidden');
+        }, 800);
+    });
+
+    // ===========================
+    // SCROLL PROGRESS BAR
+    // ===========================
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        document.getElementById('scroll-progress').style.width = progress + '%';
+
+        // Back to top visibility
+        const btn = document.getElementById('back-to-top');
+        if (scrollTop > 500) btn.classList.add('visible');
+        else btn.classList.remove('visible');
+    }, { passive: true });
+
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ===========================
+    // MOBILE MENU
+    // ===========================
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobile-menu');
+        const ham = document.getElementById('hamburger');
+        const isOpen = menu.classList.toggle('open');
+        ham.classList.toggle('active');
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+    }
+    function closeMobileMenu() {
+        document.getElementById('mobile-menu').classList.remove('open');
+        document.getElementById('hamburger').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // ===========================
+    // TOAST NOTIFICATION
+    // ===========================
+    function showToast(message, icon = 'fa-telegram', color = 'text-emerald-400') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `<i class="fa-brands ${icon} text-lg ${color}"></i><span>${message}</span>`;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+            toast.classList.add('hiding');
+            setTimeout(() => toast.remove(), 320);
+        }, 3500);
+    }
+
+    // ===========================
+    // COUNT-UP ANIMATION
+    // ===========================
+    function animateCounter(el) {
+        const target = parseInt(el.dataset.counter);
+        const suffix = el.dataset.suffix || '';
+        const duration = 1500;
+        const start = performance.now();
+        el.classList.add('counter-anim');
+
+        function step(now) {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.round(eased * target).toLocaleString('vi-VN') + suffix;
+            if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+    }
+
+    // ===========================
+    // SCROLL REVEAL + COUNTER TRIGGER
+    // ===========================
+    let countersTriggered = false;
+
+    function initScrollAnimations() {
+        const reveals = document.querySelectorAll('.reveal');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
             });
+        }, { threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
+
+        reveals.forEach(el => observer.observe(el));
+
+        // Counter trigger
+        const statsSection = document.getElementById('stats');
+        if (statsSection) {
+            const counterObserver = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting && !countersTriggered) {
+                    countersTriggered = true;
+                    document.querySelectorAll('[data-counter]').forEach(animateCounter);
+                    counterObserver.disconnect();
+                }
+            }, { threshold: 0.3 });
+            counterObserver.observe(statsSection);
+        }
+    }
+
+    // ===========================
+    // UPDATE FILTER COUNTS
+    // ===========================
+    function updateFilterCounts(searchTerm = '') {
+        const cats = ['all', 'coban', 'nangcao', 'pro'];
+        cats.forEach(cat => {
+            const count = documents.filter(doc => {
+                const matchSearch = !searchTerm ||
+                    doc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    doc.desc.toLowerCase().includes(searchTerm.toLowerCase());
+                const matchCat = cat === 'all' || doc.cat === cat;
+                return matchSearch && matchCat;
+            }).length;
+            const badge = document.getElementById(`count-${cat}`);
+            if (badge) badge.textContent = count;
+        });
+    }
+
+    // ===========================
+    // RENDER DOCUMENTS
+    // ===========================
+    function renderDocs(searchTerm = '') {
+        const container = document.getElementById('docs-container');
+        const label = document.getElementById('results-label');
+        container.innerHTML = '';
+
+        const filtered = documents.filter(doc => {
+            const matchSearch = !searchTerm ||
+                doc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                doc.desc.toLowerCase().includes(searchTerm.toLowerCase());
+            const matchCat = currentFilter === 'all' || doc.cat === currentFilter;
+            return matchSearch && matchCat;
+        });
+
+        updateFilterCounts(searchTerm);
+
+        if (label) {
+            label.innerHTML = filtered.length > 0
+                ? `<span class="text-sm text-gray-500">Hiển thị <span class="text-white font-bold">${filtered.length}</span> tài liệu</span>`
+                : '';
         }
 
-        function filterDocs(cat, btnElement) {
-            currentFilter = cat;
-            
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.className = "filter-btn px-6 py-2.5 rounded-xl text-gray-400 font-semibold transition-all duration-300 hover:text-white hover:bg-white/10";
-            });
-            btnElement.className = "filter-btn active px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-[#020617] font-bold transition-all duration-300 shadow-[0_0_15px_rgba(16,185,129,0.3)] transform hover:-translate-y-0.5";
-
-            renderDocs(document.getElementById('searchInput').value);
+        if (filtered.length === 0) {
+            container.innerHTML = `
+                <div class="col-span-full text-center py-20 px-6 glass-card rounded-3xl text-gray-400 doc-card-anim border-dashed border-2 border-gray-700/40">
+                    <div class="w-20 h-20 mx-auto bg-gray-800/50 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-folder-open text-4xl text-gray-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Không tìm thấy tài liệu</h3>
+                    <p class="text-sm">Thử tìm kiếm với từ khóa khác hoặc thay đổi bộ lọc.</p>
+                </div>`;
+            return;
         }
 
-        function searchDocs() {
-            renderDocs(document.getElementById('searchInput').value);
+        const colors = {
+            coban:   { text: "text-blue-400",   bg: "bg-blue-400/10",   border: "border-blue-400/25",   glow: "rgba(59,130,246,0.15)",  iconGlow: "rgba(59,130,246,0.3)",  tagBg: "bg-blue-500/20",   lvColor: "#60a5fa" },
+            nangcao: { text: "text-purple-400", bg: "bg-purple-400/10", border: "border-purple-400/25", glow: "rgba(168,85,247,0.15)", iconGlow: "rgba(168,85,247,0.3)", tagBg: "bg-purple-500/20", lvColor: "#c084fc" },
+            pro:     { text: "text-amber-400",  bg: "bg-amber-400/10",  border: "border-amber-400/25",  glow: "rgba(251,191,36,0.15)",  iconGlow: "rgba(251,191,36,0.3)",  tagBg: "bg-amber-500/20",  lvColor: "#fbbf24" }
+        };
+
+        const catLabels = { coban: 'Cơ Bản', nangcao: 'Nâng Cao', pro: 'Pro' };
+        const maxLevel = 80;
+
+        filtered.forEach((doc, i) => {
+            const c = colors[doc.cat];
+            const xpPercent = Math.round((doc.level / maxLevel) * 100);
+            const animDelay = `${i * 0.07}s`;
+
+            const card = document.createElement('div');
+            card.className = `glass-card rounded-[2rem] p-8 flex flex-col h-full relative group doc-card-anim border ${c.border}`;
+            card.style.animationDelay = animDelay;
+            card.style.setProperty('--hover-glow', c.glow);
+            card.innerHTML = `
+                <!-- Level badge with tooltip -->
+                <div class="absolute top-0 right-0 lv-badge-wrap z-10">
+                    <div class="${c.tagBg} backdrop-blur-md px-4 py-2 rounded-bl-3xl rounded-tr-[2rem] border-l border-b border-white/10 text-xs font-mono ${c.text} font-black flex items-center gap-1.5">
+                        <i class="fa-solid fa-lock text-[10px] opacity-60"></i> Lv ${doc.level}
+                    </div>
+                    <div class="lv-tooltip">Cần Level ${doc.level} để mở khóa</div>
+                </div>
+
+                <!-- Icon -->
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-7 ${c.bg} ${c.text} border ${c.border} group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-500"
+                     style="box-shadow: 0 0 16px ${c.iconGlow}">
+                    <i class="fa-solid ${doc.icon}"></i>
+                </div>
+
+                <!-- Category tag -->
+                <div class="mb-4">
+                    <span class="text-[10px] font-black uppercase tracking-[0.15em] ${c.text} opacity-70">${catLabels[doc.cat]}</span>
+                </div>
+
+                <!-- Title + Desc -->
+                <h3 class="text-xl font-black mb-2 text-white group-hover:${c.text} transition-colors duration-300 leading-snug">${doc.title}</h3>
+                <p class="text-gray-400 text-sm mb-6 flex-grow leading-relaxed">${doc.desc}</p>
+
+                <!-- XP Bar -->
+                <div class="mb-7">
+                    <div class="flex justify-between items-center mb-1.5">
+                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">XP Yêu Cầu</span>
+                        <span class="text-[10px] font-black ${c.text}">${xpPercent}%</span>
+                    </div>
+                    <div class="h-1.5 bg-white/5 rounded-full overflow-hidden">
+                        <div class="h-full xp-bar-fill rounded-full" style="width: 0%; background: linear-gradient(90deg, ${c.lvColor}, ${c.lvColor}80)" data-width="${xpPercent}%"></div>
+                    </div>
+                </div>
+
+                <!-- CTA Button -->
+                <a href="https://t.me/${BOT_USERNAME}?start=${doc.id}" target="_blank"
+                   onclick="showToast('Đang chuyển đến bot Telegram...', 'fa-telegram', '${c.text}')"
+                   class="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-[#0a1020] text-white font-bold transition-all duration-300 relative overflow-hidden group/btn border border-white/8 hover:border-transparent hover:shadow-[0_0_20px_${c.glow}] active:scale-[0.97] text-sm">
+                    <span class="relative z-10 flex items-center gap-2 transition-all duration-300">
+                        <i class="fa-brands fa-telegram text-lg group-hover/btn:scale-110 transition-transform"></i>
+                        Mở Khóa Ngay
+                    </span>
+                    <div class="absolute inset-0 h-full w-0 transition-all duration-300 ease-out group-hover/btn:w-full z-0"
+                         style="background: linear-gradient(90deg, ${c.lvColor}33, ${c.lvColor}22)"></div>
+                </a>
+            `;
+            container.appendChild(card);
+
+            // Animate XP bar after slight delay
+            setTimeout(() => {
+                const bar = card.querySelector('.xp-bar-fill');
+                if (bar) bar.style.width = bar.dataset.width;
+            }, 100 + i * 70);
+        });
+    }
+
+    // ===========================
+    // FILTER DOCS
+    // ===========================
+    function filterDocs(cat, btnEl) {
+        currentFilter = cat;
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.className = "filter-btn px-5 py-2 rounded-xl text-gray-400 font-semibold transition-all duration-300 hover:text-white hover:bg-white/10 text-sm";
+        });
+        btnEl.className = "filter-btn active px-5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-[#020617] font-bold transition-all duration-300 text-sm shadow-[0_0_12px_rgba(16,185,129,0.25)]";
+        renderDocs(document.getElementById('searchInput').value);
+    }
+
+    function searchDocs() {
+        renderDocs(document.getElementById('searchInput').value);
+    }
+
+    // ===========================
+    // KEYBOARD SHORTCUT (/ to search)
+    // ===========================
+    document.addEventListener('keydown', (e) => {
+        if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+            e.preventDefault();
+            const input = document.getElementById('searchInput');
+            input.focus();
+            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-
-        function initScrollAnimations() {
-            const reveals = document.querySelectorAll('.reveal');
-            
-            const revealOnScroll = () => {
-                const windowHeight = window.innerHeight;
-                const elementVisible = 100;
-
-                reveals.forEach(reveal => {
-                    const elementTop = reveal.getBoundingClientRect().top;
-                    if (elementTop < windowHeight - elementVisible) {
-                        reveal.classList.add('active');
-                    }
-                });
-            };
-
-            window.addEventListener('scroll', revealOnScroll);
-            revealOnScroll(); 
+        if (e.key === 'Escape' && document.getElementById('mobile-menu').classList.contains('open')) {
+            closeMobileMenu();
         }
+    });
 
-        renderDocs();
-        initScrollAnimations();
-    </script>
+    // ===========================
+    // INIT
+    // ===========================
+    renderDocs();
+    initScrollAnimations();
+</script>
 </body>
 </html>
