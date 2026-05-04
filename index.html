@@ -384,7 +384,7 @@
             Cộng Đồng Giao Dịch Thực Chiến
         </div>
 
-        <h1 class="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-200 to-gray-500 mb-6 drop-shadow-2xl leading-[1.35] tracking-tight">
+        <h1 class="text-1xl md:text-2xl lg:text-3xl xl:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-200 to-gray-500 mb-6 drop-shadow-2xl leading-[1.35] tracking-tight">
             TRI THỨC LÀ SỨC MẠNH<br>
             <span class="shine-text">THĂNG CẤP ĐỂ DẪN ĐẦU</span>
         </h1>
@@ -447,11 +447,11 @@
             <div class="text-xs text-gray-500 font-semibold uppercase tracking-widest">Thành Viên</div>
         </div>
         <div class="stat-card rounded-2xl p-6 text-center">
-            <div class="text-3xl md:text-4xl font-black text-blue-400 mb-1" data-counter="18" data-suffix="">0</div>
+            <div class="text-3xl md:text-4xl font-black text-blue-400 mb-1" data-counter="17" data-suffix="">0</div>
             <div class="text-xs text-gray-500 font-semibold uppercase tracking-widest">Tài Liệu Độc Quyền</div>
         </div>
         <div class="stat-card rounded-2xl p-6 text-center">
-            <div class="text-3xl md:text-4xl font-black text-purple-400 mb-1" data-counter="100+" data-suffix=" Lv">0</div>
+            <div class="text-3xl md:text-4xl font-black text-purple-400 mb-1" data-counter="80" data-suffix=" Lv">0</div>
             <div class="text-xs text-gray-500 font-semibold uppercase tracking-widest">Cấp Độ Tối Đa</div>
         </div>
         <div class="stat-card rounded-2xl p-6 text-center">
@@ -561,7 +561,7 @@
                     <div class="glass-card p-6 rounded-2xl border-amber-500/20 hover:border-amber-500/50 inline-block w-full">
                         <span class="text-xs font-black text-amber-400 uppercase tracking-widest mb-1 block">Lv 50+</span>
                         <h3 class="text-xl font-black text-white mb-2">Pro Trader</h3>
-                        <p class="text-sm text-gray-400">Setup CLC, Hệ thống MMM, Smart Money Concept, Trading To Win.</p>
+                        <p class="text-sm text-gray-400">Hệ thống MMM (Lv 50), Smart Money Concept (Lv 70), Trading To Win (Lv 80).</p>
                     </div>
                 </div>
                 <div class="roadmap-node z-10 w-12 h-12 rounded-full bg-amber-500 border-4 border-[#020617] flex items-center justify-center text-white font-black text-sm shadow-[0_0_20px_rgba(245,158,11,0.5)] shrink-0 order-1 md:order-2">3</div>
@@ -687,7 +687,7 @@
 
 <script>
     // ⚠️ CHỈNH TÊN BOT CỦA BẠN TẠI ĐÂY
-    const BOT_USERNAME = "congcupremium_bot";
+    const BOT_USERNAME = "botxptrading_bot";
 
     const documents = [
         // ── CƠ BẢN
@@ -708,11 +708,10 @@
         { id: "ytc", title: "Price Action YTC 1-6", desc: "Bộ tài liệu hành vi giá thực chiến đỉnh cao.", level: 30, cat: "nangcao", icon: "fa-eye" },
         { id: "dongtien", title: "Dòng tiền chạy qua các layer", desc: "Phân tích vĩ mô và sự luân chuyển vốn trong thị trường.", level: 35, cat: "nangcao", icon: "fa-money-bill-transfer" },
 
-        // ── PRO
-        { id: "setup_clc", title: "Setup Chất Lượng Cao", desc: "Bộ sưu tập các điểm vào lệnh có xác suất thắng lớn.", level: 50, cat: "pro", icon: "fa-crosshairs" },
-        { id: "hethong_mmm", title: "Hệ thống MMM", desc: "Gói tài liệu phương pháp giao dịch hệ thống độc quyền.", level: 60, cat: "pro", icon: "fa-gears" },
-        { id: "smc", title: "Smart Money Concept (SMC)", desc: "Giao dịch theo dấu chân cá mập — Smart Money.", level: 70, cat: "pro", icon: "fa-user-tie" },
-        { id: "trading_to_win", title: "Trading To Win", desc: "Làm chủ tâm lý và tư duy của một nhà giao dịch chiến thắng.", level: 80, cat: "pro", icon: "fa-trophy" }
+        // ── PRO  (setup_clc đã bỏ — không có trong bot)
+        { id: "hethong_mmm",   title: "Hệ thống MMM",                 desc: "Gói tài liệu phương pháp giao dịch hệ thống độc quyền.",               level: 50, cat: "pro", icon: "fa-gears" },
+        { id: "smc",           title: "Smart Money Concept (SMC)",     desc: "Giao dịch theo dấu chân cá mập — Smart Money.",                        level: 70, cat: "pro", icon: "fa-user-tie" },
+        { id: "trading_to_win",title: "Trading To Win",                desc: "Làm chủ tâm lý và tư duy của một nhà giao dịch chiến thắng.",          level: 80, cat: "pro", icon: "fa-trophy", comingSoon: true }
     ];
 
     let currentFilter = 'all';
@@ -875,11 +874,12 @@
             const animDelay = `${i * 0.07}s`;
 
             const card = document.createElement('div');
-            card.className = `glass-card rounded-[2rem] p-8 flex flex-col h-full relative group doc-card-anim border ${c.border}`;
+            card.className = `glass-card rounded-[2rem] p-8 flex flex-col h-full relative group doc-card-anim border ${c.border} ${doc.comingSoon ? 'opacity-70' : ''}`;
             card.style.animationDelay = animDelay;
             card.innerHTML = `
-                <div class="absolute top-0 right-0 lv-badge-wrap z-10">
-                    <div class="${c.tagBg} backdrop-blur-md px-4 py-2 rounded-bl-3xl rounded-tr-[2rem] border-l border-b border-white/10 text-xs font-mono ${c.text} font-black flex items-center gap-1.5">
+                <div class="absolute top-0 right-0 lv-badge-wrap z-10 flex flex-col items-end gap-1 pt-0">
+                    ${doc.comingSoon ? `<div class="bg-rose-500/20 backdrop-blur-md px-3 py-1.5 rounded-tr-[2rem] border-l border-b border-rose-500/20 text-[10px] font-black text-rose-400 tracking-widest uppercase">Sắp Ra Mắt</div>` : ''}
+                    <div class="${c.tagBg} backdrop-blur-md px-4 py-2 ${doc.comingSoon ? 'rounded-bl-3xl' : 'rounded-bl-3xl rounded-tr-[2rem]'} border-l border-b border-white/10 text-xs font-mono ${c.text} font-black flex items-center gap-1.5">
                         <i class="fa-solid fa-lock text-[10px] opacity-60"></i> Lv ${doc.level}
                     </div>
                     <div class="lv-tooltip">Cần Level ${doc.level} để mở khóa</div>
@@ -907,17 +907,22 @@
                     </div>
                 </div>
 
-                <!-- ⚠️ TẤT CẢ CÁC NÚT ĐỀU ĐƯỢC CHUYỂN VỀ BOT TELEGRAM ĐỂ KIỂM DUYỆT -->
-                <a href="https://t.me/${BOT_USERNAME}?start=${doc.id}" target="_blank" rel="noopener"
-                   onclick="showToast('Đang chuyển đến bot Telegram...', 'fa-telegram', '${c.text}')"
-                   class="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-[#0a1020] text-white font-bold transition-all duration-300 relative overflow-hidden group/btn border border-white/8 hover:border-transparent hover:shadow-[0_0_20px_${c.glow}] active:scale-[0.97] text-sm">
-                    <span class="relative z-10 flex items-center gap-2">
-                        <i class="fa-brands fa-telegram text-lg group-hover/btn:scale-110 transition-transform"></i>
-                        Mở Khóa Qua Bot
-                    </span>
-                    <div class="absolute inset-0 h-full w-0 transition-all duration-300 ease-out group-hover/btn:w-full z-0"
-                         style="background: linear-gradient(90deg, ${c.lvColor}33, ${c.lvColor}22)"></div>
-                </a>
+                ${doc.comingSoon
+                    ? `<div class="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-[#0a1020] text-gray-600 font-bold border border-white/5 cursor-not-allowed text-sm select-none">
+                           <i class="fa-solid fa-hourglass-half text-rose-500/60 text-lg"></i>
+                           Đang Cập Nhật
+                       </div>`
+                    : `<a href="https://t.me/${BOT_USERNAME}?start=${doc.id}" target="_blank" rel="noopener"
+                          onclick="showToast('Đang chuyển đến bot Telegram...', 'fa-telegram', '${c.text}')"
+                          class="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-[#0a1020] text-white font-bold transition-all duration-300 relative overflow-hidden group/btn border border-white/8 hover:border-transparent hover:shadow-[0_0_20px_${c.glow}] active:scale-[0.97] text-sm">
+                           <span class="relative z-10 flex items-center gap-2">
+                               <i class="fa-brands fa-telegram text-lg group-hover/btn:scale-110 transition-transform"></i>
+                               Mở Khóa Qua Bot
+                           </span>
+                           <div class="absolute inset-0 h-full w-0 transition-all duration-300 ease-out group-hover/btn:w-full z-0"
+                                style="background: linear-gradient(90deg, ${c.lvColor}33, ${c.lvColor}22)"></div>
+                       </a>`
+                }
             `;
             container.appendChild(card);
 
